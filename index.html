@@ -14,35 +14,113 @@
   --gold:#d5ad58;
   --cream:#fffaf0;
   --ink:#26352c;
+  --page-bg:linear-gradient(145deg,#f8eee2,#e5eee5);
+  --header-start:#123e2c;
+  --header-end:#a62632;
+  --panel-border:#e3d6bd;
+  --input-border:#cfc5b4;
+  --gift-border:#e5dac7;
+  --gift-title:var(--red);
+  --tag-bg:#e9eee7;
+  --tag-text:var(--green);
+  --button-gold:#96702d;
+  --footer-color:#667;
+}
+:root[data-theme="winter"] {
+  --red:#28658c; --green:#315c73; --gold:#b9d8e8;
+  --cream:#f7fcff; --ink:#263b49;
+  --page-bg:linear-gradient(145deg,#eaf7ff,#d8e8f2);
+  --header-start:#244e70; --header-end:#7ba9c7;
+  --panel-border:#c7dce9; --input-border:#bfd1dc;
+  --gift-border:#d5e4ec; --gift-title:#28658c;
+  --tag-bg:#e1f0f7; --tag-text:#315c73;
+  --button-gold:#668da8; --footer-color:#536f80;
+}
+:root[data-theme="gingerbread"] {
+  --red:#a94f2d; --green:#765039; --gold:#d6a65e;
+  --cream:#fff5e5; --ink:#4b3529;
+  --page-bg:linear-gradient(145deg,#f8e8d2,#ead5b9);
+  --header-start:#70452f; --header-end:#b85e36;
+  --panel-border:#e4c9a5; --input-border:#d8bd9c;
+  --gift-border:#ead6bb; --gift-title:#a94f2d;
+  --tag-bg:#f3e4ce; --tag-text:#765039;
+  --button-gold:#a8793e; --footer-color:#80644f;
+}
+:root[data-theme="northpole"] {
+  --red:#c32635; --green:#0e6045; --gold:#f0d16d;
+  --cream:#fffdf7; --ink:#263b31;
+  --page-bg:linear-gradient(145deg,#fff0ed,#e4f2e9);
+  --header-start:#0e6045; --header-end:#c32635;
+  --panel-border:#ead8c5; --input-border:#d7c9b9;
+  --gift-border:#eadfd2; --gift-title:#c32635;
+  --tag-bg:#e7f1e9; --tag-text:#0e6045;
+  --button-gold:#a77b28; --footer-color:#66766b;
 }
 * { box-sizing:border-box; }
 body {
   margin:0;
   font-family:Georgia,serif;
   color:var(--ink);
-  background:linear-gradient(145deg,#f8eee2,#e5eee5);
+  background:var(--page-bg);
   min-height:100vh;
 }
 header {
   text-align:center;
-  padding:42px 18px 30px;
+  padding:36px 18px 30px;
   color:white;
-  background:linear-gradient(120deg,#123e2c,#a62632);
+  background:linear-gradient(120deg,var(--header-start),var(--header-end));
   border-bottom:5px solid var(--gold);
+  position:relative;
+  z-index:2;
 }
 header h1 {
   font-size:clamp(32px,8vw,48px);
   margin:0 0 10px;
 }
 header p { margin:0; font-size:16px; }
+.holiday-toolbar {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:20px;
+}
+.holiday-toolbar label {
+  color:white;
+  font:14px Arial,sans-serif;
+  font-weight:bold;
+}
+.holiday-toolbar select {
+  width:auto;
+  min-width:165px;
+  margin:0;
+  border:1px solid #ffffff88;
+  background:#ffffffee;
+  color:#26352c;
+}
+.holiday-toolbar button {
+  margin:0;
+  background:#ffffffeb;
+  color:#26352c;
+  border:1px solid #ffffff88;
+}
+#greetingMessage {
+  margin:14px auto 0;
+  max-width:650px;
+  line-height:1.5;
+  font-size:17px;
+}
 main {
   max-width:850px;
   margin:25px auto;
   padding:0 15px 50px;
+  position:relative;
+  z-index:2;
 }
 .panel {
   background:var(--cream);
-  border:1px solid #e3d6bd;
+  border:1px solid var(--panel-border);
   border-radius:16px;
   padding:20px;
   margin-bottom:20px;
@@ -53,7 +131,7 @@ input,select,textarea {
   width:100%;
   padding:12px;
   margin:6px 0 12px;
-  border:1px solid #cfc5b4;
+  border:1px solid var(--input-border);
   border-radius:8px;
   font:16px Arial,sans-serif;
   background:white;
@@ -70,7 +148,7 @@ button {
   margin:4px 3px 4px 0;
 }
 button.red { background:var(--red); }
-button.gold { background:#96702d; }
+button.gold { background:var(--button-gold); }
 button.light { background:#e9e0d1; color:var(--ink); }
 button:disabled { opacity:.5; cursor:not-allowed; }
 .small {
@@ -86,43 +164,122 @@ button:disabled { opacity:.5; cursor:not-allowed; }
 .status.error { color:#a62632; }
 .status.success { color:#174c35; }
 .gift {
-  border:1px solid #e5dac7;
+  border:1px solid var(--gift-border);
   border-radius:12px;
   padding:16px;
   margin:12px 0;
   background:white;
 }
-.gift h3 { margin:0 0 8px; color:var(--red); }
+.gift h3 { margin:0 0 8px; color:var(--gift-title); }
 .gift p { margin:6px 0; line-height:1.5; }
 .gift a { color:var(--green); }
 .tag {
   display:inline-block;
-  background:#e9eee7;
-  color:var(--green);
+  background:var(--tag-bg);
+  color:var(--tag-text);
   border-radius:20px;
   padding:5px 9px;
   font:12px Arial,sans-serif;
+}
+.countdown-panel { text-align:center; }
+.countdown-panel h2 { margin-bottom:8px; }
+.countdown-intro { margin:0 0 16px; }
+.countdown-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  max-width:560px;
+  margin:0 auto;
+}
+.countdown-unit {
+  background:var(--tag-bg);
+  color:var(--tag-text);
+  border-radius:12px;
+  padding:13px 5px;
+}
+.countdown-number {
+  display:block;
+  font:bold clamp(25px,6vw,36px) Arial,sans-serif;
+  font-variant-numeric:tabular-nums;
+}
+.countdown-label {
+  display:block;
+  margin-top:5px;
+  font:12px Arial,sans-serif;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+#snowCanvas {
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:10;
 }
 .hidden { display:none !important; }
 footer {
   text-align:center;
   padding:20px;
-  color:#667;
+  color:var(--footer-color);
+  position:relative;
+  z-index:2;
 }
 hr { border:0; border-top:1px solid #ddd; margin:22px 0; }
 label { font:14px Arial,sans-serif; font-weight:bold; }
+@media (max-width:480px) {
+  header { padding-top:28px; }
+  .countdown-grid { gap:6px; }
+  .countdown-unit { padding:11px 3px; }
+  .countdown-label { font-size:10px; letter-spacing:.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior:auto !important; }
+}
 </style>
 </head>
 
 <body>
 
+<canvas id="snowCanvas" aria-hidden="true"></canvas>
+
 <header>
   <div style="font-size:30px">❄️ 🎄 ✨</div>
   <h1>My Christmas Wishlist</h1>
   <p>A little Christmas magic, one gift at a time.</p>
+  <p id="greetingMessage" aria-live="polite">
+    Welcome! The most wonderful time of the year is getting closer.
+  </p>
+
+  <div class="holiday-toolbar">
+    <label for="themeSelect">🎨 Theme</label>
+    <select id="themeSelect" onchange="changeTheme(this.value)"
+            aria-label="Choose Christmas theme">
+      <option value="classic">Classic Christmas</option>
+      <option value="winter">Winter Wonderland</option>
+      <option value="gingerbread">Gingerbread</option>
+      <option value="northpole">North Pole</option>
+    </select>
+    <button type="button" id="snowToggle" onclick="toggleSnow()">
+      ❄️ Snow: On
+    </button>
+  </div>
 </header>
 
 <main>
+
+<section class="panel countdown-panel" aria-label="Christmas countdown">
+  <h2>🎅 Countdown to Christmas</h2>
+  <p class="small countdown-intro" id="countdownMessage">
+    The magic is getting closer!
+  </p>
+  <div class="countdown-grid" id="countdown" aria-live="off">
+    <div class="countdown-unit"><span class="countdown-number" id="days">--</span><span class="countdown-label">Days</span></div>
+    <div class="countdown-unit"><span class="countdown-number" id="hours">--</span><span class="countdown-label">Hours</span></div>
+    <div class="countdown-unit"><span class="countdown-number" id="minutes">--</span><span class="countdown-label">Minutes</span></div>
+    <div class="countdown-unit"><span class="countdown-number" id="seconds">--</span><span class="countdown-label">Seconds</span></div>
+  </div>
+</section>
 
 <section class="panel">
   <h2>🎁 The Wishlist</h2>
@@ -238,6 +395,194 @@ label { font:14px Arial,sans-serif; font-weight:bold; }
 </footer>
 
 <script>
+/* =====================================
+   CHRISTMAS FEATURES
+===================================== */
+
+const CHRISTMAS_DATE = new Date(2026, 11, 25, 0, 0, 0);
+const THEME_STORAGE_KEY = "christmasWishlistTheme2026";
+const SNOW_STORAGE_KEY = "christmasWishlistSnow2026";
+
+function changeTheme(theme) {
+  const allowedThemes = ["classic", "winter", "gingerbread", "northpole"];
+  const selectedTheme = allowedThemes.includes(theme) ? theme : "classic";
+
+  document.documentElement.dataset.theme =
+    selectedTheme === "classic" ? "" : selectedTheme;
+
+  $("themeSelect").value = selectedTheme;
+
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, selectedTheme);
+  } catch (_) {
+    // The theme still works for this visit if browser storage is unavailable.
+  }
+}
+
+function loadSavedTheme() {
+  let savedTheme = "classic";
+
+  try {
+    savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "classic";
+  } catch (_) {}
+
+  changeTheme(savedTheme);
+}
+
+function updateChristmasCountdown() {
+  const now = new Date();
+  const difference = CHRISTMAS_DATE.getTime() - now.getTime();
+
+  if (difference <= 0) {
+    $("days").textContent = "0";
+    $("hours").textContent = "0";
+    $("minutes").textContent = "0";
+    $("seconds").textContent = "0";
+
+    if (now < new Date(2026, 11, 26, 0, 0, 0)) {
+      $("countdownMessage").textContent = "Merry Christmas! 🎄";
+      $("greetingMessage").textContent =
+        "Wishing you a wonderful Christmas filled with joy, warmth, and a little magic. ❤️";
+    } else {
+      $("countdownMessage").textContent =
+        "Christmas 2026 has passed. The memories last all year! ❤️";
+      $("greetingMessage").textContent =
+        "Hope you had a wonderful Christmas! Here's to another year of holiday magic.";
+    }
+    return;
+  }
+
+  const totalSeconds = Math.floor(difference / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  $("days").textContent = days;
+  $("hours").textContent = String(hours).padStart(2, "0");
+  $("minutes").textContent = String(minutes).padStart(2, "0");
+  $("seconds").textContent = String(seconds).padStart(2, "0");
+
+  $("countdownMessage").textContent =
+    days === 1 ? "Just one day until Christmas!" :
+    days === 0 ? "It's Christmas Eve! The big day is almost here!" :
+    "Every second brings us closer to Christmas morning.";
+
+  if (days > 30) {
+    $("greetingMessage").textContent =
+      "Welcome to my Christmas wishlist! Let the holiday countdown begin. 🎄";
+  } else if (days > 7) {
+    $("greetingMessage").textContent =
+      "The Christmas excitement is building. Thanks for stopping by! ✨";
+  } else if (days > 1) {
+    $("greetingMessage").textContent =
+      "Christmas is almost here! Hope your holiday season is merry and bright. ❤️";
+  } else {
+    $("greetingMessage").textContent =
+      "It's almost Christmas morning! Wishing you lots of holiday magic. 🎅";
+  }
+}
+
+/* Gentle animated snow. The canvas never blocks buttons or links. */
+let snowEnabled = true;
+let snowAnimationFrame = null;
+let snowflakes = [];
+let snowCanvas = null;
+let snowContext = null;
+
+function resizeSnowCanvas() {
+  if (!snowCanvas || !snowContext) return;
+
+  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  snowCanvas.width = Math.floor(window.innerWidth * pixelRatio);
+  snowCanvas.height = Math.floor(window.innerHeight * pixelRatio);
+  snowContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+  const flakeCount = Math.min(
+    90,
+    Math.max(35, Math.floor(window.innerWidth / 14))
+  );
+
+  snowflakes = Array.from({ length: flakeCount }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    radius: Math.random() * 2.2 + 0.7,
+    speed: Math.random() * 0.7 + 0.35,
+    drift: Math.random() * 0.5 - 0.25,
+    opacity: Math.random() * 0.55 + 0.25
+  }));
+}
+
+function drawSnow() {
+  if (!snowEnabled || !snowContext) return;
+
+  snowContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+  snowflakes.forEach(flake => {
+    snowContext.beginPath();
+    snowContext.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+    snowContext.fillStyle = "rgba(255,255,255," + flake.opacity + ")";
+    snowContext.fill();
+
+    flake.y += flake.speed;
+    flake.x += flake.drift;
+
+    if (flake.y > window.innerHeight + 5) {
+      flake.y = -5;
+      flake.x = Math.random() * window.innerWidth;
+    }
+    if (flake.x < -5) flake.x = window.innerWidth + 5;
+    if (flake.x > window.innerWidth + 5) flake.x = -5;
+  });
+
+  snowAnimationFrame = requestAnimationFrame(drawSnow);
+}
+
+function setSnowEnabled(enabled) {
+  snowEnabled = enabled;
+  $("snowCanvas").classList.toggle("hidden", !enabled);
+  $("snowToggle").textContent = enabled ? "❄️ Snow: On" : "❄️ Snow: Off";
+  $("snowToggle").setAttribute("aria-pressed", String(enabled));
+
+  try {
+    localStorage.setItem(SNOW_STORAGE_KEY, String(enabled));
+  } catch (_) {}
+
+  if (snowAnimationFrame !== null) {
+    cancelAnimationFrame(snowAnimationFrame);
+    snowAnimationFrame = null;
+  }
+
+  if (enabled) {
+    if (!snowflakes.length) resizeSnowCanvas();
+    drawSnow();
+  } else if (snowContext && snowCanvas) {
+    snowContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  }
+}
+
+function toggleSnow() {
+  setSnowEnabled(!snowEnabled);
+}
+
+function initializeChristmasFeatures() {
+  loadSavedTheme();
+  updateChristmasCountdown();
+  setInterval(updateChristmasCountdown, 1000);
+
+  snowCanvas = $("snowCanvas");
+  snowContext = snowCanvas.getContext("2d");
+
+  let savedSnow = "true";
+  try {
+    savedSnow = localStorage.getItem(SNOW_STORAGE_KEY) || "true";
+  } catch (_) {}
+
+  resizeSnowCanvas();
+  setSnowEnabled(savedSnow !== "false");
+  window.addEventListener("resize", resizeSnowCanvas);
+}
+
 /* =====================================
    SUPABASE CONFIGURATION
 ===================================== */
@@ -735,6 +1080,7 @@ async function importOldGifts() {
 ===================================== */
 
 async function start() {
+  initializeChristmasFeatures();
   if (!initializeSupabase()) return;
 
   db.auth.onAuthStateChange((event, session) => {
