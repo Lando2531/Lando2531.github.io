@@ -15,128 +15,65 @@
   --cream:#fffaf0;
   --ink:#26352c;
   --page-bg:linear-gradient(145deg,#f8eee2,#e5eee5);
-  --header-start:#123e2c;
-  --header-end:#a62632;
-  --panel-border:#e3d6bd;
-  --input-border:#cfc5b4;
-  --gift-border:#e5dac7;
-  --gift-title:var(--red);
-  --tag-bg:#e9eee7;
-  --tag-text:var(--green);
-  --button-gold:#96702d;
-  --footer-color:#667;
-}
-:root[data-theme="winter"] {
-  --red:#28658c; --green:#315c73; --gold:#b9d8e8;
-  --cream:#f7fcff; --ink:#263b49;
-  --page-bg:linear-gradient(145deg,#eaf7ff,#d8e8f2);
-  --header-start:#244e70; --header-end:#7ba9c7;
-  --panel-border:#c7dce9; --input-border:#bfd1dc;
-  --gift-border:#d5e4ec; --gift-title:#28658c;
-  --tag-bg:#e1f0f7; --tag-text:#315c73;
-  --button-gold:#668da8; --footer-color:#536f80;
-}
-:root[data-theme="gingerbread"] {
-  --red:#a94f2d; --green:#765039; --gold:#d6a65e;
-  --cream:#fff5e5; --ink:#4b3529;
-  --page-bg:linear-gradient(145deg,#f8e8d2,#ead5b9);
-  --header-start:#70452f; --header-end:#b85e36;
-  --panel-border:#e4c9a5; --input-border:#d8bd9c;
-  --gift-border:#ead6bb; --gift-title:#a94f2d;
-  --tag-bg:#f3e4ce; --tag-text:#765039;
-  --button-gold:#a8793e; --footer-color:#80644f;
-}
-:root[data-theme="northpole"] {
-  --red:#c32635; --green:#0e6045; --gold:#f0d16d;
-  --cream:#fffdf7; --ink:#263b31;
-  --page-bg:linear-gradient(145deg,#fff0ed,#e4f2e9);
-  --header-start:#0e6045; --header-end:#c32635;
-  --panel-border:#ead8c5; --input-border:#d7c9b9;
-  --gift-border:#eadfd2; --gift-title:#c32635;
-  --tag-bg:#e7f1e9; --tag-text:#0e6045;
-  --button-gold:#a77b28; --footer-color:#66766b;
+  --panel-bg:#fffaf0;
 }
 * { box-sizing:border-box; }
+
 body {
   margin:0;
   font-family:Georgia,serif;
   color:var(--ink);
   background:var(--page-bg);
   min-height:100vh;
+  transition:background .4s;
 }
+
 header {
   text-align:center;
-  padding:36px 18px 30px;
+  padding:48px 18px 32px;
   color:white;
-  background:linear-gradient(120deg,var(--header-start),var(--header-end));
+  background:linear-gradient(120deg,#123e2c,#a62632);
   border-bottom:5px solid var(--gold);
   position:relative;
-  z-index:2;
+  overflow:hidden;
 }
+
 header h1 {
   font-size:clamp(32px,8vw,48px);
-  margin:0 0 10px;
+  margin:12px 0 10px;
 }
+
 header p { margin:0; font-size:16px; }
-.holiday-toolbar {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:20px;
-}
-.holiday-toolbar label {
-  color:white;
-  font:14px Arial,sans-serif;
-  font-weight:bold;
-}
-.holiday-toolbar select {
-  width:auto;
-  min-width:165px;
-  margin:0;
-  border:1px solid #ffffff88;
-  background:#ffffffee;
-  color:#26352c;
-}
-.holiday-toolbar button {
-  margin:0;
-  background:#ffffffeb;
-  color:#26352c;
-  border:1px solid #ffffff88;
-}
-#greetingMessage {
-  margin:14px auto 0;
-  max-width:650px;
-  line-height:1.5;
-  font-size:17px;
-}
+
 main {
-  max-width:850px;
+  max-width:1000px;
   margin:25px auto;
   padding:0 15px 50px;
-  position:relative;
-  z-index:2;
 }
+
 .panel {
-  background:var(--cream);
-  border:1px solid var(--panel-border);
+  background:var(--panel-bg);
+  border:1px solid #e3d6bd;
   border-radius:16px;
   padding:20px;
   margin-bottom:20px;
   box-shadow:0 5px 18px #253b2a12;
 }
+
 h2 { color:var(--green); margin-top:0; }
+
 input,select,textarea {
   width:100%;
   padding:12px;
   margin:6px 0 12px;
-  border:1px solid var(--input-border);
+  border:1px solid #cfc5b4;
   border-radius:8px;
   font:16px Arial,sans-serif;
   background:white;
 }
+
 textarea { min-height:75px; }
+
 button {
   border:0;
   border-radius:8px;
@@ -146,151 +83,573 @@ button {
   font-size:15px;
   cursor:pointer;
   margin:4px 3px 4px 0;
+  transition:transform .15s,opacity .15s;
 }
-button.red { background:var(--red); }
-button.gold { background:var(--button-gold); }
-button.light { background:#e9e0d1; color:var(--ink); }
+
+button:hover { transform:translateY(-1px); }
 button:disabled { opacity:.5; cursor:not-allowed; }
+button.red { background:var(--red); }
+button.gold { background:#96702d; }
+button.light { background:#e9e0d1; color:var(--ink); }
+
 .small {
   font:13px Arial,sans-serif;
   color:#666;
   line-height:1.5;
 }
+
 .status {
   font:14px Arial,sans-serif;
   line-height:1.5;
   margin:10px 0;
 }
+
 .status.error { color:#a62632; }
 .status.success { color:#174c35; }
+
+.hidden { display:none !important; }
+
+footer {
+  text-align:center;
+  padding:25px;
+  color:#667;
+}
+
+hr {
+  border:0;
+  border-top:1px solid #ddd;
+  margin:22px 0;
+}
+
+label {
+  font:14px Arial,sans-serif;
+  font-weight:bold;
+}
+
+.tag {
+  display:inline-block;
+  background:#e9eee7;
+  color:var(--green);
+  border-radius:20px;
+  padding:5px 9px;
+  font:12px Arial,sans-serif;
+  margin:3px 0;
+}
+
+/* ANIMATED CHRISTMAS LIGHTS */
+
+.light-string {
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-start;
+  height:35px;
+  padding:0 8px;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:2;
+  border-top:3px solid #333;
+}
+
+.bulb {
+  width:13px;
+  height:19px;
+  border-radius:50% 50% 45% 45%;
+  margin-top:5px;
+  background:#f5d35d;
+  box-shadow:0 0 12px currentColor;
+  animation:twinkle 1.3s infinite alternate;
+}
+
+.bulb:nth-child(2n) { animation-delay:.4s; }
+.bulb:nth-child(3n) { animation-delay:.8s; }
+.bulb:nth-child(4n) { animation-delay:.2s; }
+
+.bulb:nth-child(4n+1) { background:#e94d4d; color:#e94d4d; }
+.bulb:nth-child(4n+2) { background:#58d68d; color:#58d68d; }
+.bulb:nth-child(4n+3) { background:#65b9ed; color:#65b9ed; }
+.bulb:nth-child(4n) { background:#f5d35d; color:#f5d35d; }
+
+@keyframes twinkle {
+  from { opacity:.55; filter:brightness(.8); }
+  to { opacity:1; filter:brightness(1.5); }
+}
+
+/* COUNTDOWN */
+
+.countdown {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:20px auto 5px;
+}
+
+.countdown-item {
+  background:#ffffff20;
+  border:1px solid #ffffff50;
+  border-radius:10px;
+  padding:9px 13px;
+  min-width:65px;
+}
+
+.countdown-item strong {
+  display:block;
+  font-size:23px;
+}
+
+.countdown-item span {
+  font:11px Arial,sans-serif;
+}
+
+/* THEME SELECTOR */
+
+.theme-area {
+  max-width:250px;
+  margin:18px auto 0;
+}
+
+.theme-area select {
+  margin-bottom:0;
+  text-align:center;
+}
+
+/* GIFT CARDS */
+
 .gift {
-  border:1px solid var(--gift-border);
+  border:1px solid #e5dac7;
   border-radius:12px;
   padding:16px;
   margin:12px 0;
   background:white;
+  overflow:hidden;
 }
-.gift h3 { margin:0 0 8px; color:var(--gift-title); }
+
+.gift h3 { margin:0 0 8px; color:var(--red); }
 .gift p { margin:6px 0; line-height:1.5; }
 .gift a { color:var(--green); }
-.tag {
-  display:inline-block;
-  background:var(--tag-bg);
-  color:var(--tag-text);
-  border-radius:20px;
-  padding:5px 9px;
-  font:12px Arial,sans-serif;
+
+.gift-image {
+  width:100%;
+  max-height:260px;
+  object-fit:contain;
+  background:#f5f1e9;
+  border-radius:10px;
+  margin:8px 0 12px;
 }
-.countdown-panel { text-align:center; }
-.countdown-panel h2 { margin-bottom:8px; }
-.countdown-intro { margin:0 0 16px; }
-.countdown-grid {
+
+.gallery-grid {
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:10px;
-  max-width:560px;
-  margin:0 auto;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:14px;
 }
-.countdown-unit {
-  background:var(--tag-bg);
-  color:var(--tag-text);
+
+.gallery-card {
+  background:white;
+  border:1px solid #e5dac7;
   border-radius:12px;
-  padding:13px 5px;
+  overflow:hidden;
 }
-.countdown-number {
+
+.gallery-card img {
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  background:#f5f1e9;
   display:block;
-  font:bold clamp(25px,6vw,36px) Arial,sans-serif;
-  font-variant-numeric:tabular-nums;
 }
-.countdown-label {
-  display:block;
-  margin-top:5px;
-  font:12px Arial,sans-serif;
-  text-transform:uppercase;
-  letter-spacing:1px;
+
+.gallery-card div { padding:12px; }
+.gallery-card h3 { margin:0 0 5px; font-size:16px; color:var(--red); }
+.gallery-card p { margin:0; font:13px Arial,sans-serif; color:#666; }
+
+/* FIREPLACE */
+
+.fireplace {
+  max-width:470px;
+  margin:15px auto;
+  padding:18px;
+  background:linear-gradient(#60402e,#241a17);
+  border:8px solid #8c6344;
+  border-radius:12px;
+  box-shadow:inset 0 0 15px #0008,0 7px 15px #0002;
 }
+
+.fireplace-top {
+  height:18px;
+  background:#b48a5b;
+  border-radius:5px;
+  margin:-27px -25px 18px;
+}
+
+.fireplace-opening {
+  height:180px;
+  background:#120d0b;
+  border:7px solid #3c2921;
+  border-radius:8px;
+  position:relative;
+  overflow:hidden;
+}
+
+.logs {
+  position:absolute;
+  bottom:20px;
+  left:15%;
+  width:70%;
+  height:25px;
+  background:linear-gradient(#70452a,#3b2114);
+  border-radius:50%;
+  transform:rotate(-5deg);
+  box-shadow:0 8px 0 #4a2c1b;
+}
+
+.flames {
+  position:absolute;
+  bottom:25px;
+  left:25%;
+  width:50%;
+  height:115px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:5px;
+  filter:drop-shadow(0 0 12px #ff6b13);
+}
+
+.flame {
+  width:32px;
+  height:85px;
+  border-radius:50% 50% 30% 30%;
+  background:linear-gradient(to top,#e32b10,#ff9e16,#ffe77a);
+  transform-origin:bottom;
+  animation:flicker .65s infinite alternate ease-in-out;
+}
+
+.flame:nth-child(2) {
+  height:110px;
+  width:38px;
+  animation-delay:.2s;
+}
+
+.flame:nth-child(3) {
+  height:75px;
+  animation-delay:.4s;
+}
+
+.fireplace.off .flames { display:none; }
+
+.fireplace.off .fireplace-opening:after {
+  content:"Fireplace is resting";
+  color:#c6b4a1;
+  font:14px Arial,sans-serif;
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+}
+
+@keyframes flicker {
+  from { transform:scaleY(.85) rotate(-4deg); opacity:.8; }
+  to { transform:scaleY(1.08) rotate(4deg); opacity:1; }
+}
+
+/* RADIO */
+
+.radio {
+  max-width:440px;
+  margin:12px auto;
+  padding:20px;
+  border-radius:15px;
+  background:linear-gradient(145deg,#315b42,#153324);
+  color:white;
+  text-align:center;
+  border:4px solid #b38b4c;
+  box-shadow:0 5px 15px #0002;
+}
+
+.radio-screen {
+  background:#d8e6c6;
+  color:#23402d;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:12px;
+  font:14px Arial,sans-serif;
+}
+
+.radio select {
+  margin:8px 0;
+}
+
+.radio button { background:#b48a42; }
+
+/* SNOW GLOBE */
+
+.globe-wrap {
+  display:flex;
+  justify-content:center;
+  padding:10px;
+}
+
+.snow-globe {
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  border:8px solid #d4e3e7;
+  background:radial-gradient(circle at 35% 25%,#ffffff,#a8d4e6 75%,#7aafc4);
+  position:relative;
+  overflow:hidden;
+  box-shadow:inset -12px -12px 25px #32677b55,
+             0 8px 15px #0002;
+  transition:transform .3s;
+}
+
+.snow-globe.shaking {
+  animation:shake .5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,100% { transform:rotate(0); }
+  20% { transform:rotate(-8deg); }
+  40% { transform:rotate(8deg); }
+  60% { transform:rotate(-6deg); }
+  80% { transform:rotate(5deg); }
+}
+
+.globe-tree {
+  position:absolute;
+  bottom:30px;
+  left:83px;
+  font-size:70px;
+  z-index:2;
+}
+
+.globe-house {
+  position:absolute;
+  bottom:35px;
+  left:20px;
+  font-size:42px;
+  z-index:2;
+}
+
+.globe-snow {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.globe-flake {
+  position:absolute;
+  top:-15px;
+  color:white;
+  font-size:12px;
+  opacity:.9;
+  animation:globeFall 4s linear infinite;
+}
+
+.globe-flake:nth-child(2n) { animation-duration:5s; }
+.globe-flake:nth-child(3n) { animation-duration:3.2s; }
+
+@keyframes globeFall {
+  to { transform:translateY(240px) translateX(25px); }
+}
+
+.globe-base {
+  width:150px;
+  height:32px;
+  margin:-2px auto 0;
+  background:linear-gradient(#a77b40,#65421f);
+  border-radius:8px 8px 18px 18px;
+  box-shadow:0 5px 8px #0002;
+}
+
+/* FALLING PAGE SNOW */
+
 #snowCanvas {
   position:fixed;
   inset:0;
-  width:100%;
-  height:100%;
   pointer-events:none;
-  z-index:10;
+  z-index:50;
 }
-.hidden { display:none !important; }
-footer {
-  text-align:center;
-  padding:20px;
-  color:var(--footer-color);
-  position:relative;
-  z-index:2;
+
+/* THEMES */
+
+body.theme-winter {
+  --page-bg:linear-gradient(145deg,#eaf5ff,#c9dce9);
+  --panel-bg:#f8fcff;
+  --green:#24516f;
+  --red:#386b91;
+  --gold:#9bbdd5;
 }
-hr { border:0; border-top:1px solid #ddd; margin:22px 0; }
-label { font:14px Arial,sans-serif; font-weight:bold; }
-@media (max-width:480px) {
-  header { padding-top:28px; }
-  .countdown-grid { gap:6px; }
-  .countdown-unit { padding:11px 3px; }
-  .countdown-label { font-size:10px; letter-spacing:.5px; }
+
+body.theme-gingerbread {
+  --page-bg:linear-gradient(145deg,#f5e1c8,#e5c29b);
+  --panel-bg:#fff5e7;
+  --green:#80502d;
+  --red:#a34d2c;
+  --gold:#d9a55d;
 }
-@media (prefers-reduced-motion: reduce) {
-  * { scroll-behavior:auto !important; }
+
+body.theme-northpole {
+  --page-bg:linear-gradient(145deg,#e7e8f5,#d5d8eb);
+  --panel-bg:#fffaff;
+  --green:#353b72;
+  --red:#a02d50;
+  --gold:#d5ad58;
+}
+
+@media(max-width:600px) {
+  header { padding-top:55px; }
+  .fireplace { margin-top:25px; }
+  .gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="snowCanvas" aria-hidden="true"></canvas>
+<canvas id="snowCanvas"></canvas>
 
 <header>
+  <div class="light-string" aria-hidden="true">
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+  </div>
+
   <div style="font-size:30px">❄️ 🎄 ✨</div>
   <h1>My Christmas Wishlist</h1>
-  <p>A little Christmas magic, one gift at a time.</p>
-  <p id="greetingMessage" aria-live="polite">
-    Welcome! The most wonderful time of the year is getting closer.
-  </p>
+  <p id="seasonGreeting">A little Christmas magic, one gift at a time.</p>
 
-  <div class="holiday-toolbar">
-    <label for="themeSelect">🎨 Theme</label>
+  <div class="countdown" id="countdown">
+    <div class="countdown-item"><strong id="days">--</strong><span>Days</span></div>
+    <div class="countdown-item"><strong id="hours">--</strong><span>Hours</span></div>
+    <div class="countdown-item"><strong id="minutes">--</strong><span>Minutes</span></div>
+    <div class="countdown-item"><strong id="seconds">--</strong><span>Seconds</span></div>
+  </div>
+
+  <div class="theme-area">
     <select id="themeSelect" onchange="changeTheme(this.value)"
-            aria-label="Choose Christmas theme">
+      aria-label="Choose website theme">
       <option value="classic">Classic Christmas</option>
       <option value="winter">Winter Wonderland</option>
       <option value="gingerbread">Gingerbread</option>
       <option value="northpole">North Pole</option>
     </select>
-    <button type="button" id="snowToggle" onclick="toggleSnow()">
-      ❄️ Snow: On
-    </button>
   </div>
+
+  <button class="light" onclick="toggleSnow()" id="snowButton">
+    Turn Snow Off ❄️
+  </button>
 </header>
 
 <main>
-
-<section class="panel countdown-panel" aria-label="Christmas countdown">
-  <h2>🎅 Countdown to Christmas</h2>
-  <p class="small countdown-intro" id="countdownMessage">
-    The magic is getting closer!
-  </p>
-  <div class="countdown-grid" id="countdown" aria-live="off">
-    <div class="countdown-unit"><span class="countdown-number" id="days">--</span><span class="countdown-label">Days</span></div>
-    <div class="countdown-unit"><span class="countdown-number" id="hours">--</span><span class="countdown-label">Hours</span></div>
-    <div class="countdown-unit"><span class="countdown-number" id="minutes">--</span><span class="countdown-label">Minutes</span></div>
-    <div class="countdown-unit"><span class="countdown-number" id="seconds">--</span><span class="countdown-label">Seconds</span></div>
-  </div>
-</section>
 
 <section class="panel">
   <h2>🎁 The Wishlist</h2>
   <p class="small">Browse the gifts on my Christmas list.</p>
 
-  <input id="search"
-    placeholder="Search my wishlist..."
+  <input id="search" placeholder="Search my wishlist..."
     oninput="renderGifts()">
 
   <div id="giftList">Loading gifts...</div>
   <div id="status" class="status" role="status"></div>
+</section>
+
+<section class="panel">
+  <h2>🖼️ Gift Gallery</h2>
+  <p class="small">
+    A picture-perfect look at some of the gifts on my list.
+  </p>
+  <div id="giftGallery" class="gallery-grid">
+    <p class="small">Loading gallery...</p>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>🔥 Cozy Christmas Fireplace</h2>
+  <p class="small">
+    Settle in by the fire. Turn the flames on or off whenever you like.
+  </p>
+
+  <div class="fireplace" id="fireplace">
+    <div class="fireplace-top"></div>
+    <div class="fireplace-opening">
+      <div class="flames">
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+      </div>
+      <div class="logs"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center">
+    <button onclick="toggleFireplace()" id="fireButton">
+      Turn Fireplace Off
+    </button>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>📻 Christmas Radio</h2>
+  <p class="small">
+    Put on some Christmas music while you browse the wishlist.
+    Press play to start the stream.
+  </p>
+
+  <div class="radio">
+    <div style="font-size:32px">📻</div>
+    <div class="radio-screen" id="radioStatus">
+      Christmas Radio — Ready to play
+    </div>
+
+    <label for="radioStation" style="color:white">Station</label>
+    <select id="radioStation">
+      <option value="https://ice.somafm.com/christmas">
+        SomaFM Christmas Lounge
+      </option>
+    </select>
+
+    <audio id="christmasAudio" preload="none"></audio>
+
+    <button onclick="toggleRadio()" id="radioButton">
+      ▶ Play Christmas Radio
+    </button>
+  </div>
+
+  <p class="small">
+    Music is streamed from an external radio service. Availability
+    depends on that service and your internet connection.
+  </p>
+</section>
+
+<section class="panel">
+  <h2>❄️ Christmas Snow Globe</h2>
+  <p class="small">
+    Give the globe a shake and watch the snow swirl around the little
+    Christmas scene.
+  </p>
+
+  <div class="globe-wrap">
+    <div>
+      <div class="snow-globe" id="snowGlobe">
+        <div class="globe-snow" id="globeSnow"></div>
+        <div class="globe-house">🏠</div>
+        <div class="globe-tree">🎄</div>
+      </div>
+      <div class="globe-base"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center">
+    <button class="gold" onclick="shakeGlobe()">Shake Snow Globe ✨</button>
+  </div>
 </section>
 
 <section class="panel">
@@ -302,10 +661,7 @@ label { font:14px Arial,sans-serif; font-weight:bold; }
 
   <div id="loginArea">
     <label for="email">Your email address</label>
-    <input
-      id="email"
-      type="email"
-      autocomplete="email"
+    <input id="email" type="email" autocomplete="email"
       placeholder="Enter your account email">
 
     <button id="loginButton" type="button" onclick="login()">
@@ -318,12 +674,10 @@ label { font:14px Arial,sans-serif; font-weight:bold; }
     </p>
 
     <p id="loginStatus" class="status" role="status"
-       aria-live="polite"></p>
+      aria-live="polite"></p>
   </div>
 
-  <button id="logoutButton"
-    class="red hidden"
-    onclick="logout()">
+  <button id="logoutButton" class="red hidden" onclick="logout()">
     Sign Out
   </button>
 </section>
@@ -345,6 +699,16 @@ label { font:14px Arial,sans-serif; font-weight:bold; }
   <label for="giftLink">Product link</label>
   <input id="giftLink" placeholder="Product link (optional)">
 
+  <label for="giftImage">Gift image URL</label>
+  <input id="giftImage" type="url"
+    placeholder="Paste a direct image URL (optional)">
+
+  <p class="small">
+    Add a direct link to an image ending in a format such as .jpg,
+    .png, or .webp. The image will appear in the gallery and on the
+    gift card.
+  </p>
+
   <label for="giftCategory">Category</label>
   <select id="giftCategory">
     <option>Other</option>
@@ -357,8 +721,7 @@ label { font:14px Arial,sans-serif; font-weight:bold; }
   </select>
 
   <label for="giftNotes">Notes</label>
-  <textarea id="giftNotes"
-    placeholder="Notes (optional)"></textarea>
+  <textarea id="giftNotes" placeholder="Notes (optional)"></textarea>
 
   <label>
     <input id="giftTop" type="checkbox" style="width:auto">
@@ -379,9 +742,7 @@ label { font:14px Arial,sans-serif; font-weight:bold; }
     on this device. It does not erase your old list.
   </p>
 
-  <button class="gold"
-    id="importButton"
-    onclick="importOldGifts()">
+  <button class="gold" id="importButton" onclick="importOldGifts()">
     Import My Existing Gifts
   </button>
 
@@ -395,194 +756,6 @@ label { font:14px Arial,sans-serif; font-weight:bold; }
 </footer>
 
 <script>
-/* =====================================
-   CHRISTMAS FEATURES
-===================================== */
-
-const CHRISTMAS_DATE = new Date(2026, 11, 25, 0, 0, 0);
-const THEME_STORAGE_KEY = "christmasWishlistTheme2026";
-const SNOW_STORAGE_KEY = "christmasWishlistSnow2026";
-
-function changeTheme(theme) {
-  const allowedThemes = ["classic", "winter", "gingerbread", "northpole"];
-  const selectedTheme = allowedThemes.includes(theme) ? theme : "classic";
-
-  document.documentElement.dataset.theme =
-    selectedTheme === "classic" ? "" : selectedTheme;
-
-  $("themeSelect").value = selectedTheme;
-
-  try {
-    localStorage.setItem(THEME_STORAGE_KEY, selectedTheme);
-  } catch (_) {
-    // The theme still works for this visit if browser storage is unavailable.
-  }
-}
-
-function loadSavedTheme() {
-  let savedTheme = "classic";
-
-  try {
-    savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "classic";
-  } catch (_) {}
-
-  changeTheme(savedTheme);
-}
-
-function updateChristmasCountdown() {
-  const now = new Date();
-  const difference = CHRISTMAS_DATE.getTime() - now.getTime();
-
-  if (difference <= 0) {
-    $("days").textContent = "0";
-    $("hours").textContent = "0";
-    $("minutes").textContent = "0";
-    $("seconds").textContent = "0";
-
-    if (now < new Date(2026, 11, 26, 0, 0, 0)) {
-      $("countdownMessage").textContent = "Merry Christmas! 🎄";
-      $("greetingMessage").textContent =
-        "Wishing you a wonderful Christmas filled with joy, warmth, and a little magic. ❤️";
-    } else {
-      $("countdownMessage").textContent =
-        "Christmas 2026 has passed. The memories last all year! ❤️";
-      $("greetingMessage").textContent =
-        "Hope you had a wonderful Christmas! Here's to another year of holiday magic.";
-    }
-    return;
-  }
-
-  const totalSeconds = Math.floor(difference / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  $("days").textContent = days;
-  $("hours").textContent = String(hours).padStart(2, "0");
-  $("minutes").textContent = String(minutes).padStart(2, "0");
-  $("seconds").textContent = String(seconds).padStart(2, "0");
-
-  $("countdownMessage").textContent =
-    days === 1 ? "Just one day until Christmas!" :
-    days === 0 ? "It's Christmas Eve! The big day is almost here!" :
-    "Every second brings us closer to Christmas morning.";
-
-  if (days > 30) {
-    $("greetingMessage").textContent =
-      "Welcome to my Christmas wishlist! Let the holiday countdown begin. 🎄";
-  } else if (days > 7) {
-    $("greetingMessage").textContent =
-      "The Christmas excitement is building. Thanks for stopping by! ✨";
-  } else if (days > 1) {
-    $("greetingMessage").textContent =
-      "Christmas is almost here! Hope your holiday season is merry and bright. ❤️";
-  } else {
-    $("greetingMessage").textContent =
-      "It's almost Christmas morning! Wishing you lots of holiday magic. 🎅";
-  }
-}
-
-/* Gentle animated snow. The canvas never blocks buttons or links. */
-let snowEnabled = true;
-let snowAnimationFrame = null;
-let snowflakes = [];
-let snowCanvas = null;
-let snowContext = null;
-
-function resizeSnowCanvas() {
-  if (!snowCanvas || !snowContext) return;
-
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-  snowCanvas.width = Math.floor(window.innerWidth * pixelRatio);
-  snowCanvas.height = Math.floor(window.innerHeight * pixelRatio);
-  snowContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-
-  const flakeCount = Math.min(
-    90,
-    Math.max(35, Math.floor(window.innerWidth / 14))
-  );
-
-  snowflakes = Array.from({ length: flakeCount }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    radius: Math.random() * 2.2 + 0.7,
-    speed: Math.random() * 0.7 + 0.35,
-    drift: Math.random() * 0.5 - 0.25,
-    opacity: Math.random() * 0.55 + 0.25
-  }));
-}
-
-function drawSnow() {
-  if (!snowEnabled || !snowContext) return;
-
-  snowContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-  snowflakes.forEach(flake => {
-    snowContext.beginPath();
-    snowContext.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-    snowContext.fillStyle = "rgba(255,255,255," + flake.opacity + ")";
-    snowContext.fill();
-
-    flake.y += flake.speed;
-    flake.x += flake.drift;
-
-    if (flake.y > window.innerHeight + 5) {
-      flake.y = -5;
-      flake.x = Math.random() * window.innerWidth;
-    }
-    if (flake.x < -5) flake.x = window.innerWidth + 5;
-    if (flake.x > window.innerWidth + 5) flake.x = -5;
-  });
-
-  snowAnimationFrame = requestAnimationFrame(drawSnow);
-}
-
-function setSnowEnabled(enabled) {
-  snowEnabled = enabled;
-  $("snowCanvas").classList.toggle("hidden", !enabled);
-  $("snowToggle").textContent = enabled ? "❄️ Snow: On" : "❄️ Snow: Off";
-  $("snowToggle").setAttribute("aria-pressed", String(enabled));
-
-  try {
-    localStorage.setItem(SNOW_STORAGE_KEY, String(enabled));
-  } catch (_) {}
-
-  if (snowAnimationFrame !== null) {
-    cancelAnimationFrame(snowAnimationFrame);
-    snowAnimationFrame = null;
-  }
-
-  if (enabled) {
-    if (!snowflakes.length) resizeSnowCanvas();
-    drawSnow();
-  } else if (snowContext && snowCanvas) {
-    snowContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  }
-}
-
-function toggleSnow() {
-  setSnowEnabled(!snowEnabled);
-}
-
-function initializeChristmasFeatures() {
-  loadSavedTheme();
-  updateChristmasCountdown();
-  setInterval(updateChristmasCountdown, 1000);
-
-  snowCanvas = $("snowCanvas");
-  snowContext = snowCanvas.getContext("2d");
-
-  let savedSnow = "true";
-  try {
-    savedSnow = localStorage.getItem(SNOW_STORAGE_KEY) || "true";
-  } catch (_) {}
-
-  resizeSnowCanvas();
-  setSnowEnabled(savedSnow !== "false");
-  window.addEventListener("resize", resizeSnowCanvas);
-}
-
 /* =====================================
    SUPABASE CONFIGURATION
 ===================================== */
@@ -613,11 +786,8 @@ function setStatus(id, text, type = "") {
 
 function initializeSupabase() {
   if (!window.supabase) {
-    setStatus(
-      "status",
-      "Supabase library did not load. Refresh the page.",
-      "error"
-    );
+    setStatus("status",
+      "Supabase library did not load. Refresh the page.", "error");
     return false;
   }
 
@@ -625,11 +795,9 @@ function initializeSupabase() {
     SUPABASE_URL.includes("PASTE_") ||
     SUPABASE_PUBLISHABLE_KEY.includes("PASTE_")
   ) {
-    setStatus(
-      "status",
+    setStatus("status",
       "Please add your Supabase Project URL and Publishable key.",
-      "error"
-    );
+      "error");
     return false;
   }
 
@@ -645,12 +813,317 @@ function initializeSupabase() {
         }
       }
     );
-
     return true;
   } catch (error) {
     setStatus("status", error.message, "error");
     return false;
   }
+}
+
+/* =====================================
+   VERSION 2.0 FEATURES
+===================================== */
+
+function updateCountdown() {
+  const christmas = new Date("December 25, 2026 00:00:00").getTime();
+  const now = Date.now();
+  const distance = christmas - now;
+
+  if (distance <= 0) {
+    $("countdown").innerHTML =
+      "<div class='countdown-item'><strong>🎄</strong><span>Merry Christmas!</span></div>";
+    return;
+  }
+
+  $("days").textContent = Math.floor(distance / 86400000);
+  $("hours").textContent = Math.floor((distance % 86400000) / 3600000);
+  $("minutes").textContent = Math.floor((distance % 3600000) / 60000);
+  $("seconds").textContent = Math.floor((distance % 60000) / 1000);
+}
+
+function updateGreeting() {
+  const now = new Date();
+  const month = now.getMonth();
+  const day = now.getDate();
+
+  let greeting = "A little Christmas magic, one gift at a time.";
+
+  if (month === 11 && day === 25) {
+    greeting = "Merry Christmas! 🎄";
+  } else if (month === 11 && day > 25) {
+    greeting = "Hope you had a wonderful Christmas!";
+  } else if (month === 11) {
+    greeting = "Christmas is almost here! ✨";
+  } else if (month === 10) {
+    greeting = "The Christmas countdown is on!";
+  } else if (month >= 8) {
+    greeting = "The most wonderful time of the year is getting closer!";
+  }
+
+  $("seasonGreeting").textContent = greeting;
+}
+
+function changeTheme(theme) {
+  document.body.classList.remove(
+    "theme-winter",
+    "theme-gingerbread",
+    "theme-northpole"
+  );
+
+  if (theme === "winter") {
+    document.body.classList.add("theme-winter");
+  } else if (theme === "gingerbread") {
+    document.body.classList.add("theme-gingerbread");
+  } else if (theme === "northpole") {
+    document.body.classList.add("theme-northpole");
+  }
+
+  localStorage.setItem("christmasTheme", theme);
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem("christmasTheme") || "classic";
+  $("themeSelect").value = saved;
+  changeTheme(saved);
+}
+
+/* =====================================
+   FALLING SNOW
+===================================== */
+
+let snowEnabled = true;
+let snowflakes = [];
+let snowAnimation = null;
+
+function setupSnow() {
+  const canvas = $("snowCanvas");
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  snowflakes = Array.from({length:75}, () => ({
+    x:Math.random() * canvas.width,
+    y:Math.random() * canvas.height,
+    radius:Math.random() * 3 + 1,
+    speed:Math.random() * 1.5 + .5,
+    drift:Math.random() * .8 - .4
+  }));
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    if (snowEnabled) {
+      ctx.fillStyle = "rgba(255,255,255,.8)";
+
+      snowflakes.forEach(f => {
+        ctx.beginPath();
+        ctx.arc(f.x,f.y,f.radius,0,Math.PI * 2);
+        ctx.fill();
+
+        f.y += f.speed;
+        f.x += f.drift;
+
+        if (f.y > canvas.height) {
+          f.y = -5;
+          f.x = Math.random() * canvas.width;
+        }
+
+        if (f.x > canvas.width) f.x = 0;
+        if (f.x < 0) f.x = canvas.width;
+      });
+    }
+
+    snowAnimation = requestAnimationFrame(draw);
+  }
+
+  draw();
+}
+
+function toggleSnow() {
+  snowEnabled = !snowEnabled;
+  $("snowButton").textContent =
+    snowEnabled ? "Turn Snow Off ❄️" : "Turn Snow On ❄️";
+
+  localStorage.setItem("christmasSnow", snowEnabled ? "on" : "off");
+}
+
+function loadSnowPreference() {
+  snowEnabled = localStorage.getItem("christmasSnow") !== "off";
+  $("snowButton").textContent =
+    snowEnabled ? "Turn Snow Off ❄️" : "Turn Snow On ❄️";
+}
+
+/* =====================================
+   FIREPLACE
+===================================== */
+
+let fireplaceOn = true;
+
+function toggleFireplace() {
+  fireplaceOn = !fireplaceOn;
+
+  $("fireplace").classList.toggle("off", !fireplaceOn);
+  $("fireButton").textContent =
+    fireplaceOn ? "Turn Fireplace Off" : "Turn Fireplace On";
+}
+
+/* =====================================
+   CHRISTMAS RADIO
+===================================== */
+
+let radioPlaying = false;
+
+function toggleRadio() {
+  const audio = $("christmasAudio");
+  const station = $("radioStation").value;
+
+  if (!radioPlaying) {
+    if (!audio.src || audio.src !== station) {
+      audio.src = station;
+    }
+
+    $("radioStatus").textContent = "Connecting to Christmas Radio...";
+
+    audio.play().then(() => {
+      radioPlaying = true;
+      $("radioButton").textContent = "⏸ Pause Christmas Radio";
+      $("radioStatus").textContent = "Now playing Christmas music 🎄";
+    }).catch(() => {
+      radioPlaying = false;
+      $("radioStatus").textContent =
+        "Couldn't start the stream. Try again or check your connection.";
+      $("radioButton").textContent = "▶ Play Christmas Radio";
+    });
+  } else {
+    audio.pause();
+    radioPlaying = false;
+    $("radioButton").textContent = "▶ Play Christmas Radio";
+    $("radioStatus").textContent = "Radio paused";
+  }
+}
+
+$("radioStation").addEventListener("change", () => {
+  const audio = $("christmasAudio");
+  const wasPlaying = radioPlaying;
+
+  audio.pause();
+  radioPlaying = false;
+  audio.src = $("radioStation").value;
+
+  $("radioButton").textContent = "▶ Play Christmas Radio";
+  $("radioStatus").textContent = "Station selected — ready to play";
+
+  if (wasPlaying) toggleRadio();
+});
+
+$("christmasAudio").addEventListener("error", () => {
+  radioPlaying = false;
+  $("radioButton").textContent = "▶ Play Christmas Radio";
+  $("radioStatus").textContent = "The radio stream is currently unavailable.";
+});
+
+/* =====================================
+   SNOW GLOBE
+===================================== */
+
+function createGlobeSnow() {
+  const container = $("globeSnow");
+  container.innerHTML = "";
+
+  for (let i = 0; i < 30; i++) {
+    const flake = document.createElement("span");
+    flake.className = "globe-flake";
+    flake.textContent = "❄";
+    flake.style.left = Math.random() * 100 + "%";
+    flake.style.animationDelay = Math.random() * 4 + "s";
+    flake.style.fontSize = (8 + Math.random() * 9) + "px";
+    container.appendChild(flake);
+  }
+}
+
+function shakeGlobe() {
+  const globe = $("snowGlobe");
+
+  globe.classList.remove("shaking");
+  void globe.offsetWidth;
+  globe.classList.add("shaking");
+
+  const flakes = $("globeSnow").children;
+
+  Array.from(flakes).forEach(flake => {
+    flake.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+    flake.style.animationDelay = "0s";
+  });
+
+  setTimeout(() => {
+    globe.classList.remove("shaking");
+  }, 550);
+}
+
+/* =====================================
+   IMAGE URL STORAGE
+   Uses the existing notes column.
+   No database column is required.
+===================================== */
+
+const IMAGE_MARKER = "[[WISHLIST_IMAGE:";
+
+function cleanImageURL(value) {
+  if (!value) return "";
+
+  try {
+    const url = new URL(value.trim());
+
+    if (url.protocol !== "https:" && url.protocol !== "http:") {
+      return "";
+    }
+
+    return url.href;
+  } catch (_) {
+    return "";
+  }
+}
+
+function extractGiftData(notes) {
+  const text = String(notes || "");
+  const match = text.match(/\[\[WISHLIST_IMAGE:([^\]]+)\]\]/);
+
+  let image = "";
+
+  if (match) {
+    try {
+      image = cleanImageURL(decodeURIComponent(match[1]));
+    } catch (_) {}
+  }
+
+  const cleanNotes = text
+    .replace(/\n?\[\[WISHLIST_IMAGE:[^\]]+\]\]/g, "")
+    .trim();
+
+  return {
+    notes:cleanNotes,
+    image
+  };
+}
+
+function makeStoredNotes(notes, image) {
+  const cleanNotes = String(notes || "").trim();
+  const safeImage = cleanImageURL(image);
+
+  if (!safeImage) return cleanNotes;
+
+  const marker = IMAGE_MARKER +
+    encodeURIComponent(safeImage) + "]]";
+
+  return cleanNotes
+    ? cleanNotes + "\n" + marker
+    : marker;
 }
 
 /* =====================================
@@ -663,20 +1136,14 @@ async function login() {
   const email = $("email").value.trim();
 
   if (!email) {
-    setStatus(
-      "loginStatus",
-      "Please enter your email address.",
-      "error"
-    );
+    setStatus("loginStatus",
+      "Please enter your email address.", "error");
     return;
   }
 
   if (!db) {
-    setStatus(
-      "loginStatus",
-      "Supabase is not connected. Refresh the page.",
-      "error"
-    );
+    setStatus("loginStatus",
+      "Supabase is not connected. Refresh the page.", "error");
     return;
   }
 
@@ -688,9 +1155,9 @@ async function login() {
 
   try {
     const { error } = await db.auth.signInWithOtp({
-      email: email,
-      options: {
-        shouldCreateUser: false,
+      email:email,
+      options:{
+        shouldCreateUser:false,
         emailRedirectTo:
           window.location.origin + window.location.pathname
       }
@@ -698,18 +1165,14 @@ async function login() {
 
     if (error) throw error;
 
-    setStatus(
-      "loginStatus",
+    setStatus("loginStatus",
       "Login link sent! Check your email, including your spam folder. Open the link on this same device or browser.",
-      "success"
-    );
+      "success");
 
   } catch (error) {
-    setStatus(
-      "loginStatus",
+    setStatus("loginStatus",
       "Could not send login link: " + error.message,
-      "error"
-    );
+      "error");
   } finally {
     loading = false;
     $("loginButton").disabled = false;
@@ -753,6 +1216,7 @@ function updateOwnerView() {
     : "Viewing mode. Sign in to manage your wishlist.";
 
   renderGifts();
+  renderGallery();
 }
 
 /* =====================================
@@ -768,24 +1232,22 @@ async function loadGifts() {
     const { data, error } = await db
       .from("gifts")
       .select("*")
-      .order("created_at", { ascending: true });
+      .order("created_at", {ascending:true});
 
     if (error) throw error;
 
     gifts = data || [];
-    renderGifts();
 
-    setStatus(
-      "status",
-      gifts.length ? "" : "No gifts have been added yet."
-    );
+    renderGifts();
+    renderGallery();
+
+    setStatus("status",
+      gifts.length ? "" : "No gifts have been added yet.");
 
   } catch (error) {
-    setStatus(
-      "status",
+    setStatus("status",
       "Couldn't load gifts: " + error.message,
-      "error"
-    );
+      "error");
   }
 }
 
@@ -795,14 +1257,19 @@ async function loadGifts() {
 
 function renderGifts() {
   const list = $("giftList");
+  if (!list) return;
+
   const search = $("search").value.toLowerCase();
 
-  const visible = gifts.filter(g =>
-    [g.name, g.category, g.notes]
-      .join(" ")
-      .toLowerCase()
-      .includes(search)
-  );
+  const visible = gifts.filter(g => {
+    const details = extractGiftData(g.notes);
+
+    return [
+      g.name,
+      g.category,
+      details.notes
+    ].join(" ").toLowerCase().includes(search);
+  });
 
   if (!visible.length) {
     list.innerHTML = "<p>No gifts found.</p>";
@@ -812,12 +1279,23 @@ function renderGifts() {
   list.innerHTML = "";
 
   visible.forEach(g => {
+    const details = extractGiftData(g.notes);
+
     const card = document.createElement("article");
     card.className = "gift";
 
+    if (details.image) {
+      const image = document.createElement("img");
+      image.className = "gift-image";
+      image.src = details.image;
+      image.alt = g.name || "Wishlist gift";
+      image.loading = "lazy";
+      image.onerror = () => image.remove();
+      card.appendChild(image);
+    }
+
     const title = document.createElement("h3");
-    title.textContent =
-      (g.top_pick ? "⭐ " : "🎁 ") + g.name;
+    title.textContent = (g.top_pick ? "⭐ " : "🎁 ") + g.name;
     card.appendChild(title);
 
     const category = document.createElement("span");
@@ -831,9 +1309,9 @@ function renderGifts() {
       card.appendChild(price);
     }
 
-    if (g.notes) {
+    if (details.notes) {
       const notes = document.createElement("p");
-      notes.textContent = g.notes;
+      notes.textContent = details.notes;
       card.appendChild(notes);
     }
 
@@ -841,10 +1319,7 @@ function renderGifts() {
       try {
         const url = new URL(g.link);
 
-        if (
-          url.protocol === "https:" ||
-          url.protocol === "http:"
-        ) {
+        if (url.protocol === "https:" || url.protocol === "http:") {
           const link = document.createElement("a");
           link.href = url.href;
           link.target = "_blank";
@@ -878,13 +1353,66 @@ function renderGifts() {
 }
 
 /* =====================================
+   GIFT IMAGE GALLERY
+===================================== */
+
+function renderGallery() {
+  const gallery = $("giftGallery");
+  if (!gallery) return;
+
+  gallery.innerHTML = "";
+
+  const picturedGifts = gifts.filter(g =>
+    extractGiftData(g.notes).image
+  );
+
+  if (!picturedGifts.length) {
+    gallery.innerHTML =
+      "<p class='small'>No gift pictures yet. Sign in and add an image URL to a gift to start your gallery.</p>";
+    return;
+  }
+
+  picturedGifts.forEach(g => {
+    const details = extractGiftData(g.notes);
+
+    const card = document.createElement("article");
+    card.className = "gallery-card";
+
+    const image = document.createElement("img");
+    image.src = details.image;
+    image.alt = g.name || "Wishlist gift";
+    image.loading = "lazy";
+
+    image.onerror = () => {
+      card.remove();
+      if (!gallery.children.length) {
+        gallery.innerHTML =
+          "<p class='small'>The saved gift images could not be loaded.</p>";
+      }
+    };
+
+    const info = document.createElement("div");
+
+    const title = document.createElement("h3");
+    title.textContent = g.top_pick ? "⭐ " + g.name : g.name;
+
+    const category = document.createElement("p");
+    category.textContent = g.category || "Other";
+
+    info.append(title,category);
+    card.append(image,info);
+    gallery.appendChild(card);
+  });
+}
+
+/* =====================================
    CLEAR FORM
 ===================================== */
 
 function clearForm() {
   editingId = null;
 
-  ["giftName", "giftPrice", "giftLink", "giftNotes"]
+  ["giftName","giftPrice","giftLink","giftImage","giftNotes"]
     .forEach(id => $(id).value = "");
 
   $("giftCategory").value = "Other";
@@ -899,18 +1427,19 @@ function clearForm() {
 function editGift(g) {
   editingId = g.id;
 
+  const details = extractGiftData(g.notes);
+
   $("giftName").value = g.name || "";
   $("giftPrice").value = g.price || "";
   $("giftLink").value = g.link || "";
+  $("giftImage").value = details.image || "";
   $("giftCategory").value = g.category || "Other";
-  $("giftNotes").value = g.notes || "";
+  $("giftNotes").value = details.notes;
   $("giftTop").checked = !!g.top_pick;
 
   $("formHeading").textContent = "Edit gift";
 
-  $("ownerArea").scrollIntoView({
-    behavior: "smooth"
-  });
+  $("ownerArea").scrollIntoView({behavior:"smooth"});
 }
 
 /* =====================================
@@ -930,13 +1459,21 @@ async function saveGift() {
     return;
   }
 
+  const imageInput = $("giftImage").value.trim();
+  const image = cleanImageURL(imageInput);
+
+  if (imageInput && !image) {
+    alert("Please enter a valid image URL beginning with http:// or https://.");
+    return;
+  }
+
   const item = {
     name,
-    price: $("giftPrice").value.trim(),
-    link: $("giftLink").value.trim(),
-    category: $("giftCategory").value,
-    notes: $("giftNotes").value.trim(),
-    top_pick: $("giftTop").checked
+    price:$("giftPrice").value.trim(),
+    link:$("giftLink").value.trim(),
+    category:$("giftCategory").value,
+    notes:makeStoredNotes($("giftNotes").value, image),
+    top_pick:$("giftTop").checked
   };
 
   try {
@@ -1000,9 +1537,7 @@ async function deleteGift(id) {
 ===================================== */
 
 function findOldGifts() {
-  const raw = localStorage.getItem(
-    "christmasWishlist2026"
-  );
+  const raw = localStorage.getItem("christmasWishlist2026");
 
   if (!raw) return [];
 
@@ -1010,12 +1545,8 @@ function findOldGifts() {
     const parsed = JSON.parse(raw);
 
     if (Array.isArray(parsed)) return parsed;
-    if (parsed && Array.isArray(parsed.gifts)) {
-      return parsed.gifts;
-    }
-    if (parsed && Array.isArray(parsed.items)) {
-      return parsed.items;
-    }
+    if (parsed && Array.isArray(parsed.gifts)) return parsed.gifts;
+    if (parsed && Array.isArray(parsed.items)) return parsed.items;
 
   } catch (_) {}
 
@@ -1035,23 +1566,19 @@ async function importOldGifts() {
 
   if (
     gifts.length &&
-    !confirm(
-      "Your online list already has gifts. Import the old list anyway?"
-    )
+    !confirm("Your online list already has gifts. Import the old list anyway?")
   ) {
     return;
   }
 
   const rows = old.map(g => ({
-    name: String(g.name || g.title || "Untitled gift"),
-    price: String(g.price || ""),
-    link: String(g.link || g.url || ""),
-    category: String(g.category || "Other"),
-    notes: String(g.notes || ""),
-    top_pick: Boolean(
-      g.top_pick || g.topPick || g.priority
-    ),
-    owner_id: currentUser.id
+    name:String(g.name || g.title || "Untitled gift"),
+    price:String(g.price || ""),
+    link:String(g.link || g.url || ""),
+    category:String(g.category || "Other"),
+    notes:String(g.notes || ""),
+    top_pick:Boolean(g.top_pick || g.topPick || g.priority),
+    owner_id:currentUser.id
   }));
 
   try {
@@ -1062,8 +1589,7 @@ async function importOldGifts() {
     if (error) throw error;
 
     $("importStatus").textContent =
-      "Imported " + rows.length +
-      " gifts. Please check your wishlist.";
+      "Imported " + rows.length + " gifts. Please check your wishlist.";
 
     $("importButton").disabled = true;
 
@@ -1080,7 +1606,15 @@ async function importOldGifts() {
 ===================================== */
 
 async function start() {
-  initializeChristmasFeatures();
+  loadTheme();
+  loadSnowPreference();
+  setupSnow();
+  createGlobeSnow();
+  updateCountdown();
+  updateGreeting();
+
+  setInterval(updateCountdown,1000);
+
   if (!initializeSupabase()) return;
 
   db.auth.onAuthStateChange((event, session) => {
@@ -1097,14 +1631,11 @@ async function start() {
 
     if (error) throw error;
 
-    currentUser = data.session
-      ? data.session.user
-      : null;
+    currentUser = data.session ? data.session.user : null;
 
     updateOwnerView();
     await loadGifts();
 
-    // Clean up authentication information from the URL
     if (window.location.hash.includes("access_token")) {
       history.replaceState(
         null,
@@ -1114,11 +1645,9 @@ async function start() {
     }
 
   } catch (error) {
-    setStatus(
-      "status",
+    setStatus("status",
       "Could not initialize your session: " + error.message,
-      "error"
-    );
+      "error");
   }
 }
 
