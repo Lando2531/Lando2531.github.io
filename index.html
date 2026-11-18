@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Christmas Wishlist 🎄</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --red:#a62632; --green:#174c35; --gold:#d5ad58;
+  --cream:#fffaf0; --ink:#26352c;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; font-family:Georgia,serif; color:var(--ink);
+  background:linear-gradient(145deg,#f8eee2,#e5eee5);
+  min-height:100vh;
+}
+header {
+  text-align:center; padding:42px 18px 30px;
+  color:white; background:linear-gradient(120deg,#123e2c,#a62632);
+  border-bottom:5px solid var(--gold);
+}
+header h1 { font-size:clamp(32px,8vw,48px); margin:0 0 10px; }
+header p { margin:0; font-size:16px; }
+main { max-width:850px; margin:25px auto; padding:0 15px 50px; }
+.panel {
+  background:var(--cream); border:1px solid #e3d6bd;
+  border-radius:16px; padding:20px; margin-bottom:20px;
+  box-shadow:0 5px 18px #253b2a12;
+}
+h2 { color:var(--green); margin-top:0; }
+input,select,textarea {
+  width:100%; padding:12px; margin:6px 0 12px;
+  border:1px solid #cfc5b4; border-radius:8px;
+  font:16px Arial,sans-serif; background:white;
+}
+textarea { min-height:75px; }
+button {
+  border:0; border-radius:8px; padding:12px 16px;
+  background:var(--green); color:white; font-size:15px;
+  cursor:pointer; margin:4px 3px 4px 0;
+}
+button.red { background:var(--red); }
+button.gold { background:#96702d; }
+button.light { background:#e9e0d1; color:#26352c; }
+button:disabled { opacity:.5; }
+.small { font:13px Arial,sans-serif; color:#666; }
+#status { margin:10px 0; font:14px Arial,sans-serif; }
+.gift {
+  border:1px solid #e5dac7; border-radius:12px;
+  padding:16px; margin:12px 0; background:white;
+}
+.gift h3 { margin:0 0 8px; color:var(--red); }
+.gift p { margin:6px 0; line-height:1.5; }
+.gift a { color:var(--green); }
+.tag {
+  display:inline-block; background:#e9eee7; color:var(--green);
+  border-radius:20px; padding:5px 9px; font:12px Arial,sans-serif;
+}
+.hidden { display:none; }
+footer { text-align:center; padding:20px; color:#667; }
+</style>
+</head>
+<body>
+<header>
+  <div style="font-size:30px">❄️ 🎄 ✨</div>
+  <h1>My Christmas Wishlist</h1>
+  <p>A little Christmas magic, one gift at a time.</p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>🎁 The Wishlist</h2>
+    <p class="small">Browse the gifts on my Christmas list.</p>
+    <input id="search" placeholder="Search my wishlist..." oninput="renderGifts()">
+    <div id="giftList">Loading gifts...</div>
+    <div id="status" role="status"></div>
+  </section>
+
+  <section class="panel">
+    <h2>🔐 Owner Login</h2>
+    <p class="small" id="accountStatus">Sign in to manage your wishlist.</p>
+    <div id="loginArea">
+      <input id="email" type="email" placeholder="Your account email">
+      <input id="password" type="password" placeholder="Your password">
+      <button onclick="login()">Sign in</button>
+    </div>
+    <button id="logoutButton" class="red hidden" onclick="logout()">Sign out</button>
+  </section>
+
+  <section id="ownerArea" class="panel hidden">
+    <h2>✏️ Manage My Wishlist</h2>
+    <p class="small">Only signed-in owners can add, edit, or remove gifts.</p>
+
+    <h3 id="formHeading">Add a gift</h3>
+    <input id="giftName" placeholder="Gift name *">
+    <input id="giftPrice" placeholder="Price (optional)">
+    <input id="giftLink" placeholder="Product link (optional)">
+    <select id="giftCategory">
+      <option>Other</option>
+      <option>Electronics</option>
+      <option>Clothing</option>
+      <option>Hobbies</option>
+      <option>Games</option>
+      <option>Home</option>
+      <option>Halloween</option>
+    </select>
+    <textarea id="giftNotes" placeholder="Notes (optional)"></textarea>
+    <label><input id="giftTop" type="checkbox" style="width:auto"> Top pick ⭐</label>
+    <br>
+    <button onclick="saveGift()">Save gift</button>
+    <button class="light" onclick="clearForm()">Cancel</button>
+
+    <hr style="border:0;border-top:1px solid #ddd;margin:22px 0">
+    <h3>Import your old gifts</h3>
+    <p class="small">This looks for the wishlist saved by your previous version on this device. It does not erase your old list.</p>
+    <button class="gold" id="importButton" onclick="importOldGifts()">Import My Existing Gifts</button>
+    <p class="small" id="importStatus"></p>
+  </section>
+</main>
+
+<footer>Made with Christmas spirit ❤️</footer>
+
+<script>
+const SUPABASE_URL = "https://dgyhqohyuotjzashttmb.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishablePm-yTEcJGUHTa2bofqmAzw_MLtd8eEi";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+let gifts = [];
+let editingId = null;
+let currentUser = null;
+
+function message(text) {
+  document.getElementById("status").textContent = text;
+}
+
+async function loadGifts() {
+  message("Loading your wishlist...");
+  const { data, error } = await db
+    .from("gifts")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    message("Couldn't load gifts: " + error.message);
+    return;
+  }
+  gifts = data || [];
+  renderGifts();
+  message(gifts.length ? "" : "No gifts have been added yet.");
+}
+
+function renderGifts() {
+  const list = document.getElementById("giftList");
+  const search = document.getElementById("search").value.toLowerCase();
+  const visible = gifts.filter(g =>
+    [g.name,g.category,g.notes].join(" ").toLowerCase().includes(search)
+  );
+
+  if (!visible.length) {
+    list.innerHTML = "<p>No gifts found.</p>";
+    return;
+  }
+
+  list.innerHTML = "";
+  visible.forEach(g => {
+    const card = document.createElement("article");
+    card.className = "gift";
+
+    const title = document.createElement("h3");
+    title.textContent = (g.top_pick ? "⭐ " : "🎁 ") + g.name;
+    card.appendChild(title);
+
+    const category = document.createElement("span");
+    category.className = "tag";
+    category.textContent = g.category || "Other";
+    card.appendChild(category);
+
+    if (g.price) {
+      const price = document.createElement("p");
+      price.textContent = "Price: " + g.price;
+      card.appendChild(price);
+    }
+
+    if (g.notes) {
+      const notes = document.createElement("p");
+      notes.textContent = g.notes;
+      card.appendChild(notes);
+    }
+
+    if (g.link) {
+      try {
+        const url = new URL(g.link);
+        if (url.protocol === "https:" || url.protocol === "http:") {
+          const link = document.createElement("a");
+          link.href = url.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "View gift";
+          card.appendChild(link);
+        }
+      } catch (_) {}
+    }
+
+    if (currentUser && g.owner_id === currentUser.id) {
+      const actions = document.createElement("div");
+      actions.style.marginTop = "12px";
+      const edit = document.createElement("button");
+      edit.className = "gold";
+      edit.textContent = "Edit";
+      edit.onclick = () => editGift(g);
+      const remove = document.createElement("button");
+      remove.className = "red";
+      remove.textContent = "Delete";
+      remove.onclick = () => deleteGift(g.id);
+      actions.append(edit, remove);
+      card.appendChild(actions);
+    }
+    list.appendChild(card);
+  });
+}
+
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const { data, error } = await db.auth.signInWithPassword({email,password});
+  if (error) {
+    message("Sign-in failed: " + error.message);
+    return;
+  }
+  currentUser = data.user;
+  updateOwnerView();
+  await loadGifts();
+}
+
+async function logout() {
+  await db.auth.signOut();
+  currentUser = null;
+  clearForm();
+  updateOwnerView();
+  await loadGifts();
+}
+
+function updateOwnerView() {
+  document.getElementById("ownerArea").classList.toggle("hidden",!currentUser);
+  document.getElementById("loginArea").classList.toggle("hidden",!!currentUser);
+  document.getElementById("logoutButton").classList.toggle("hidden",!currentUser);
+  document.getElementById("accountStatus").textContent =
+    currentUser ? "Signed in. You can manage your gifts." :
+    "Viewing mode. Sign in to manage your wishlist.";
+  renderGifts();
+}
+
+function clearForm() {
+  editingId = null;
+  ["giftName","giftPrice","giftLink","giftNotes"].forEach(id =>
+    document.getElementById(id).value = ""
+  );
+  document.getElementById("giftCategory").value = "Other";
+  document.getElementById("giftTop").checked = false;
+  document.getElementById("formHeading").textContent = "Add a gift";
+}
+
+function editGift(g) {
+  editingId = g.id;
+  document.getElementById("giftName").value = g.name || "";
+  document.getElementById("giftPrice").value = g.price || "";
+  document.getElementById("giftLink").value = g.link || "";
+  document.getElementById("giftCategory").value = g.category || "Other";
+  document.getElementById("giftNotes").value = g.notes || "";
+  document.getElementById("giftTop").checked = !!g.top_pick;
+  document.getElementById("formHeading").textContent = "Edit gift";
+  document.getElementById("ownerArea").scrollIntoView({behavior:"smooth"});
+}
+
+async function saveGift() {
+  if (!currentUser) return;
+  const name = document.getElementById("giftName").value.trim();
+  if (!name) {
+    alert("Please enter a gift name.");
+    return;
+  }
+
+  const item = {
+    name,
+    price: document.getElementById("giftPrice").value.trim(),
+    link: document.getElementById("giftLink").value.trim(),
+    category: document.getElementById("giftCategory").value,
+    notes: document.getElementById("giftNotes").value.trim(),
+    top_pick: document.getElementById("giftTop").checked
+  };
+
+  let result;
+  if (editingId) {
+    result = await db.from("gifts").update(item).eq("id",editingId);
+  } else {
+    result = await db.from("gifts").insert(item);
+  }
+
+  if (result.error) {
+    alert("Couldn't save: " + result.error.message);
+    return;
+  }
+  clearForm();
+  await loadGifts();
+}
+
+async function deleteGift(id) {
+  if (!confirm("Delete this gift from your wishlist?")) return;
+  const { error } = await db.from("gifts").delete().eq("id",id);
+  if (error) {
+    alert("Couldn't delete: " + error.message);
+    return;
+  }
+  await loadGifts();
+}
+
+function findOldGifts() {
+  const raw = localStorage.getItem("christmasWishlist2026");
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+    if (parsed && Array.isArray(parsed.gifts)) return parsed.gifts;
+    if (parsed && Array.isArray(parsed.items)) return parsed.items;
+  } catch (_) {}
+  return [];
+}
+
+async function importOldGifts() {
+  if (!currentUser) return;
+  const old = findOldGifts();
+  if (!old.length) {
+    document.getElementById("importStatus").textContent =
+      "No old gifts were found under the expected saved-list key on this device. Your old list has not been changed.";
+    return;
+  }
+
+  const alreadyHave = gifts.length;
+  if (alreadyHave && !confirm("Your online list already has gifts. Import the old list anyway?")) return;
+
+  const rows = old.map(g => ({
+    name: String(g.name || g.title || "Untitled gift"),
+    price: String(g.price || ""),
+    link: String(g.link || g.url || ""),
+    category: String(g.category || "Other"),
+    notes: String(g.notes || ""),
+    top_pick: Boolean(g.top_pick || g.topPick || g.priority)
+  }));
+
+  const { error } = await db.from("gifts").insert(rows);
+  if (error) {
+    document.getElementById("importStatus").textContent =
+      "Import failed: " + error.message;
+    return;
+  }
+  document.getElementById("importStatus").textContent =
+    "Imported " + rows.length + " gifts. Please check the list below.";
+  document.getElementById("importButton").disabled = true;
+  await loadGifts();
+}
+
+async function start() {
+  const { data } = await db.auth.getSession();
+  currentUser = data.session ? data.session.user : null;
+  updateOwnerView();
+  await loadGifts();
+
+  db.auth.onAuthStateChange((_event, session) => {
+    currentUser = session ? session.user : null;
+    updateOwnerView();
+    loadGifts();
+  });
+}
+start();
+</script>
+</body>
+</html>
