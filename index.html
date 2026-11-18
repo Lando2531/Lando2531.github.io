@@ -8,61 +8,101 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --red:#a62632; --green:#174c35; --gold:#d5ad58;
-  --cream:#fffaf0; --ink:#26352c;
+  --red:#a62632;
+  --green:#174c35;
+  --gold:#d5ad58;
+  --cream:#fffaf0;
+  --ink:#26352c;
 }
 * { box-sizing:border-box; }
 body {
-  margin:0; font-family:Georgia,serif; color:var(--ink);
+  margin:0;
+  font-family:Georgia,serif;
+  color:var(--ink);
   background:linear-gradient(145deg,#f8eee2,#e5eee5);
   min-height:100vh;
 }
 header {
-  text-align:center; padding:42px 18px 30px;
-  color:white; background:linear-gradient(120deg,#123e2c,#a62632);
+  text-align:center;
+  padding:42px 18px 30px;
+  color:white;
+  background:linear-gradient(120deg,#123e2c,#a62632);
   border-bottom:5px solid var(--gold);
 }
-header h1 { font-size:clamp(32px,8vw,48px); margin:0 0 10px; }
-header p { margin:0; font-size:16px; }
-main { max-width:850px; margin:25px auto; padding:0 15px 50px; }
+header h1 {
+  font-size:clamp(32px,8vw,48px);
+  margin:0 0 10px;
+}
+header p { margin:0; }
+main {
+  max-width:850px;
+  margin:25px auto;
+  padding:0 15px 50px;
+}
 .panel {
-  background:var(--cream); border:1px solid #e3d6bd;
-  border-radius:16px; padding:20px; margin-bottom:20px;
+  background:var(--cream);
+  border:1px solid #e3d6bd;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
   box-shadow:0 5px 18px #253b2a12;
 }
 h2 { color:var(--green); margin-top:0; }
 input,select,textarea {
-  width:100%; padding:12px; margin:6px 0 12px;
-  border:1px solid #cfc5b4; border-radius:8px;
-  font:16px Arial,sans-serif; background:white;
+  width:100%;
+  padding:12px;
+  margin:6px 0 12px;
+  border:1px solid #cfc5b4;
+  border-radius:8px;
+  font:16px Arial,sans-serif;
+  background:white;
 }
 textarea { min-height:75px; }
 button {
-  border:0; border-radius:8px; padding:12px 16px;
-  background:var(--green); color:white; font-size:15px;
-  cursor:pointer; margin:4px 3px 4px 0;
+  border:0;
+  border-radius:8px;
+  padding:12px 16px;
+  background:var(--green);
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  margin:4px 3px 4px 0;
 }
 button.red { background:var(--red); }
 button.gold { background:#96702d; }
 button.light { background:#e9e0d1; color:#26352c; }
-button:disabled { opacity:.5; }
+button:disabled { opacity:.5; cursor:wait; }
 .small { font:13px Arial,sans-serif; color:#666; }
-#status { margin:10px 0; font:14px Arial,sans-serif; }
+.status {
+  margin:10px 0;
+  font:14px Arial,sans-serif;
+  overflow-wrap:anywhere;
+}
+.error { color:#a62632; }
+.success { color:#174c35; }
 .gift {
-  border:1px solid #e5dac7; border-radius:12px;
-  padding:16px; margin:12px 0; background:white;
+  border:1px solid #e5dac7;
+  border-radius:12px;
+  padding:16px;
+  margin:12px 0;
+  background:white;
 }
 .gift h3 { margin:0 0 8px; color:var(--red); }
 .gift p { margin:6px 0; line-height:1.5; }
 .gift a { color:var(--green); }
 .tag {
-  display:inline-block; background:#e9eee7; color:var(--green);
-  border-radius:20px; padding:5px 9px; font:12px Arial,sans-serif;
+  display:inline-block;
+  background:#e9eee7;
+  color:var(--green);
+  border-radius:20px;
+  padding:5px 9px;
+  font:12px Arial,sans-serif;
 }
-.hidden { display:none; }
+.hidden { display:none !important; }
 footer { text-align:center; padding:20px; color:#667; }
 </style>
 </head>
+
 <body>
 <header>
   <div style="font-size:30px">❄️ 🎄 ✨</div>
@@ -71,104 +111,190 @@ footer { text-align:center; padding:20px; color:#667; }
 </header>
 
 <main>
-  <section class="panel">
-    <h2>🎁 The Wishlist</h2>
-    <p class="small">Browse the gifts on my Christmas list.</p>
-    <input id="search" placeholder="Search my wishlist..." oninput="renderGifts()">
-    <div id="giftList">Loading gifts...</div>
-    <div id="status" role="status"></div>
-  </section>
 
-  <section class="panel">
-    <h2>🔐 Owner Login</h2>
-    <p class="small" id="accountStatus">Sign in to manage your wishlist.</p>
-    <div id="loginArea">
-      <input id="email" type="email" placeholder="Your account email">
-      <input id="password" type="password" placeholder="Your password">
-      <button onclick="login()">Sign in</button>
-    </div>
-    <button id="logoutButton" class="red hidden" onclick="logout()">Sign out</button>
-  </section>
+<section class="panel">
+  <h2>🎁 The Wishlist</h2>
+  <p class="small">Browse the gifts on my Christmas list.</p>
+  <input id="search" placeholder="Search my wishlist...">
+  <div id="giftList">Connecting to wishlist...</div>
+  <div id="status" class="status" role="status"></div>
+</section>
 
-  <section id="ownerArea" class="panel hidden">
-    <h2>✏️ Manage My Wishlist</h2>
-    <p class="small">Only signed-in owners can add, edit, or remove gifts.</p>
+<section class="panel">
+  <h2>🔐 Owner Login</h2>
+  <p class="small" id="accountStatus">
+    Sign in to manage your wishlist.
+  </p>
 
-    <h3 id="formHeading">Add a gift</h3>
-    <input id="giftName" placeholder="Gift name *">
-    <input id="giftPrice" placeholder="Price (optional)">
-    <input id="giftLink" placeholder="Product link (optional)">
-    <select id="giftCategory">
-      <option>Other</option>
-      <option>Electronics</option>
-      <option>Clothing</option>
-      <option>Hobbies</option>
-      <option>Games</option>
-      <option>Home</option>
-      <option>Halloween</option>
-    </select>
-    <textarea id="giftNotes" placeholder="Notes (optional)"></textarea>
-    <label><input id="giftTop" type="checkbox" style="width:auto"> Top pick ⭐</label>
-    <br>
-    <button onclick="saveGift()">Save gift</button>
-    <button class="light" onclick="clearForm()">Cancel</button>
+  <div id="loginArea">
+    <label for="email">Email address</label>
+    <input id="email" type="email" autocomplete="username"
+      placeholder="Your account email">
 
-    <hr style="border:0;border-top:1px solid #ddd;margin:22px 0">
-    <h3>Import your old gifts</h3>
-    <p class="small">This looks for the wishlist saved by your previous version on this device. It does not erase your old list.</p>
-    <button class="gold" id="importButton" onclick="importOldGifts()">Import My Existing Gifts</button>
-    <p class="small" id="importStatus"></p>
-  </section>
+    <label for="password">Password</label>
+    <input id="password" type="password"
+      autocomplete="current-password" placeholder="Your password">
+
+    <button id="loginButton" type="button">Sign in</button>
+
+    <p id="loginStatus" class="status" role="status" aria-live="polite"></p>
+  </div>
+
+  <button id="logoutButton" class="red hidden" type="button">
+    Sign out
+  </button>
+</section>
+
+<section id="ownerArea" class="panel hidden">
+  <h2>✏️ Manage My Wishlist</h2>
+  <p class="small">Manage your gifts while signed in.</p>
+
+  <h3 id="formHeading">Add a gift</h3>
+
+  <label for="giftName">Gift name</label>
+  <input id="giftName" placeholder="Gift name *">
+
+  <label for="giftPrice">Price</label>
+  <input id="giftPrice" placeholder="Price (optional)">
+
+  <label for="giftLink">Product link</label>
+  <input id="giftLink" placeholder="Product link (optional)">
+
+  <label for="giftCategory">Category</label>
+  <select id="giftCategory">
+    <option>Other</option>
+    <option>Electronics</option>
+    <option>Clothing</option>
+    <option>Hobbies</option>
+    <option>Games</option>
+    <option>Home</option>
+    <option>Halloween</option>
+  </select>
+
+  <label for="giftNotes">Notes</label>
+  <textarea id="giftNotes" placeholder="Notes (optional)"></textarea>
+
+  <label>
+    <input id="giftTop" type="checkbox" style="width:auto">
+    Top pick ⭐
+  </label>
+
+  <br>
+  <button id="saveButton" type="button">Save gift</button>
+  <button id="cancelButton" class="light" type="button">Cancel</button>
+  <p id="saveStatus" class="status" role="status"></p>
+
+  <hr style="border:0;border-top:1px solid #ddd;margin:22px 0">
+
+  <h3>Import your old gifts</h3>
+  <p class="small">
+    Attempts to read the old wishlist from this browser.
+    Your original saved list will not be deleted.
+  </p>
+  <button id="importButton" class="gold" type="button">
+    Import My Existing Gifts
+  </button>
+  <p id="importStatus" class="status" role="status"></p>
+</section>
+
 </main>
 
 <footer>Made with Christmas spirit ❤️</footer>
 
 <script>
+"use strict";
+
+// YOUR SUPABASE CONNECTION
 const SUPABASE_URL = "https://dgyhqohyuotjzashttmb.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishablePm-yTEcJGUHTa2bofqmAzw_MLtd8eEi";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
+let db = null;
 let gifts = [];
 let editingId = null;
 let currentUser = null;
+let loginBusy = false;
 
-function message(text) {
-  document.getElementById("status").textContent = text;
+const $ = id => document.getElementById(id);
+
+function showStatus(id, text, type = "") {
+  const element = $(id);
+  element.textContent = text;
+  element.className = "status " + type;
+}
+
+function setHidden(id, hidden) {
+  $(id).classList.toggle("hidden", hidden);
+}
+
+function initializeDatabase() {
+  if (!window.supabase || !window.supabase.createClient) {
+    showStatus(
+      "status",
+      "The Supabase library did not load. Check your internet connection and refresh."
+    );
+    $("giftList").textContent = "Wishlist connection unavailable.";
+    return false;
+  }
+
+  try {
+    db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+    return true;
+  } catch (error) {
+    showStatus("status", "Connection setup failed: " + error.message, "error");
+    return false;
+  }
 }
 
 async function loadGifts() {
-  message("Loading your wishlist...");
-  const { data, error } = await db
-    .from("gifts")
-    .select("*")
-    .order("created_at", { ascending: true });
+  $("giftList").textContent = "Loading gifts...";
 
-  if (error) {
-    message("Couldn't load gifts: " + error.message);
-    return;
+  try {
+    const { data, error } = await db
+      .from("gifts")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+
+    gifts = data || [];
+    renderGifts();
+
+    if (!gifts.length) {
+      showStatus("status", "No gifts have been added yet.");
+    } else {
+      showStatus("status", "");
+    }
+  } catch (error) {
+    $("giftList").textContent = "Unable to load gifts.";
+    showStatus(
+      "status",
+      "Database error: " + error.message,
+      "error"
+    );
   }
-  gifts = data || [];
-  renderGifts();
-  message(gifts.length ? "" : "No gifts have been added yet.");
 }
 
 function renderGifts() {
-  const list = document.getElementById("giftList");
-  const search = document.getElementById("search").value.toLowerCase();
+  const list = $("giftList");
+  const search = $("search").value.toLowerCase();
+
   const visible = gifts.filter(g =>
-    [g.name,g.category,g.notes].join(" ").toLowerCase().includes(search)
+    [g.name, g.category, g.notes]
+      .join(" ")
+      .toLowerCase()
+      .includes(search)
   );
 
+  list.replaceChildren();
+
   if (!visible.length) {
-    list.innerHTML = "<p>No gifts found.</p>";
+    list.textContent = "No gifts found.";
     return;
   }
 
-  list.innerHTML = "";
   visible.forEach(g => {
     const card = document.createElement("article");
     card.className = "gift";
@@ -211,36 +337,102 @@ function renderGifts() {
     if (currentUser && g.owner_id === currentUser.id) {
       const actions = document.createElement("div");
       actions.style.marginTop = "12px";
+
       const edit = document.createElement("button");
       edit.className = "gold";
       edit.textContent = "Edit";
       edit.onclick = () => editGift(g);
+
       const remove = document.createElement("button");
       remove.className = "red";
       remove.textContent = "Delete";
       remove.onclick = () => deleteGift(g.id);
+
       actions.append(edit, remove);
       card.appendChild(actions);
     }
+
     list.appendChild(card);
   });
 }
 
 async function login() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const { data, error } = await db.auth.signInWithPassword({email,password});
-  if (error) {
-    message("Sign-in failed: " + error.message);
+  if (loginBusy) return;
+
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  showStatus("loginStatus", "");
+
+  if (!email || !password) {
+    showStatus(
+      "loginStatus",
+      "Please enter both your email and password.",
+      "error"
+    );
     return;
   }
-  currentUser = data.user;
-  updateOwnerView();
-  await loadGifts();
+
+  if (!db) {
+    showStatus(
+      "loginStatus",
+      "Supabase is not connected. Refresh the page.",
+      "error"
+    );
+    return;
+  }
+
+  loginBusy = true;
+  $("loginButton").disabled = true;
+  $("loginButton").textContent = "Signing in...";
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      console.error("Supabase login error:", error);
+      showStatus(
+        "loginStatus",
+        "Login failed: " + error.message +
+        (error.code ? " (" + error.code + ")" : ""),
+        "error"
+      );
+      return;
+    }
+
+    currentUser = data.user;
+
+    $("password").value = "";
+    showStatus("loginStatus", "Login successful!", "success");
+
+    updateOwnerView();
+    await loadGifts();
+
+  } catch (error) {
+    console.error("Login exception:", error);
+    showStatus(
+      "loginStatus",
+      "Unexpected login error: " + error.message,
+      "error"
+    );
+  } finally {
+    loginBusy = false;
+    $("loginButton").disabled = false;
+    $("loginButton").textContent = "Sign in";
+  }
 }
 
 async function logout() {
-  await db.auth.signOut();
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    showStatus("loginStatus", error.message, "error");
+    return;
+  }
+
   currentUser = null;
   clearForm();
   updateOwnerView();
@@ -248,102 +440,147 @@ async function logout() {
 }
 
 function updateOwnerView() {
-  document.getElementById("ownerArea").classList.toggle("hidden",!currentUser);
-  document.getElementById("loginArea").classList.toggle("hidden",!!currentUser);
-  document.getElementById("logoutButton").classList.toggle("hidden",!currentUser);
-  document.getElementById("accountStatus").textContent =
-    currentUser ? "Signed in. You can manage your gifts." :
-    "Viewing mode. Sign in to manage your wishlist.";
+  setHidden("ownerArea", !currentUser);
+  setHidden("loginArea", !!currentUser);
+  setHidden("logoutButton", !currentUser);
+
+  $("accountStatus").textContent = currentUser
+    ? "Signed in. You can manage your gifts."
+    : "Viewing mode. Sign in to manage your wishlist.";
+
   renderGifts();
 }
 
 function clearForm() {
   editingId = null;
-  ["giftName","giftPrice","giftLink","giftNotes"].forEach(id =>
-    document.getElementById(id).value = ""
-  );
-  document.getElementById("giftCategory").value = "Other";
-  document.getElementById("giftTop").checked = false;
-  document.getElementById("formHeading").textContent = "Add a gift";
+
+  ["giftName", "giftPrice", "giftLink", "giftNotes"].forEach(id => {
+    $(id).value = "";
+  });
+
+  $("giftCategory").value = "Other";
+  $("giftTop").checked = false;
+  $("formHeading").textContent = "Add a gift";
+  showStatus("saveStatus", "");
 }
 
 function editGift(g) {
   editingId = g.id;
-  document.getElementById("giftName").value = g.name || "";
-  document.getElementById("giftPrice").value = g.price || "";
-  document.getElementById("giftLink").value = g.link || "";
-  document.getElementById("giftCategory").value = g.category || "Other";
-  document.getElementById("giftNotes").value = g.notes || "";
-  document.getElementById("giftTop").checked = !!g.top_pick;
-  document.getElementById("formHeading").textContent = "Edit gift";
-  document.getElementById("ownerArea").scrollIntoView({behavior:"smooth"});
+  $("giftName").value = g.name || "";
+  $("giftPrice").value = g.price || "";
+  $("giftLink").value = g.link || "";
+  $("giftCategory").value = g.category || "Other";
+  $("giftNotes").value = g.notes || "";
+  $("giftTop").checked = !!g.top_pick;
+
+  $("formHeading").textContent = "Edit gift";
+  $("ownerArea").scrollIntoView({ behavior: "smooth" });
 }
 
 async function saveGift() {
   if (!currentUser) return;
-  const name = document.getElementById("giftName").value.trim();
+
+  const name = $("giftName").value.trim();
+
   if (!name) {
-    alert("Please enter a gift name.");
+    showStatus("saveStatus", "Please enter a gift name.", "error");
     return;
   }
 
   const item = {
     name,
-    price: document.getElementById("giftPrice").value.trim(),
-    link: document.getElementById("giftLink").value.trim(),
-    category: document.getElementById("giftCategory").value,
-    notes: document.getElementById("giftNotes").value.trim(),
-    top_pick: document.getElementById("giftTop").checked
+    price: $("giftPrice").value.trim(),
+    link: $("giftLink").value.trim(),
+    category: $("giftCategory").value,
+    notes: $("giftNotes").value.trim(),
+    top_pick: $("giftTop").checked
   };
 
-  let result;
-  if (editingId) {
-    result = await db.from("gifts").update(item).eq("id",editingId);
-  } else {
-    result = await db.from("gifts").insert(item);
-  }
+  $("saveButton").disabled = true;
 
-  if (result.error) {
-    alert("Couldn't save: " + result.error.message);
-    return;
+  try {
+    let result;
+
+    if (editingId) {
+      result = await db.from("gifts")
+        .update(item)
+        .eq("id", editingId)
+        .eq("owner_id", currentUser.id);
+    } else {
+      result = await db.from("gifts")
+        .insert({
+          ...item,
+          owner_id: currentUser.id
+        });
+    }
+
+    if (result.error) throw result.error;
+
+    clearForm();
+    showStatus("saveStatus", "Gift saved!", "success");
+    await loadGifts();
+
+  } catch (error) {
+    showStatus("saveStatus", "Couldn't save: " + error.message, "error");
+  } finally {
+    $("saveButton").disabled = false;
   }
-  clearForm();
-  await loadGifts();
 }
 
 async function deleteGift(id) {
+  if (!currentUser) return;
   if (!confirm("Delete this gift from your wishlist?")) return;
-  const { error } = await db.from("gifts").delete().eq("id",id);
-  if (error) {
+
+  try {
+    const { error } = await db.from("gifts")
+      .delete()
+      .eq("id", id)
+      .eq("owner_id", currentUser.id);
+
+    if (error) throw error;
+
+    await loadGifts();
+  } catch (error) {
     alert("Couldn't delete: " + error.message);
-    return;
   }
-  await loadGifts();
 }
 
 function findOldGifts() {
   const raw = localStorage.getItem("christmasWishlist2026");
+
   if (!raw) return [];
+
   try {
     const parsed = JSON.parse(raw);
+
     if (Array.isArray(parsed)) return parsed;
     if (parsed && Array.isArray(parsed.gifts)) return parsed.gifts;
     if (parsed && Array.isArray(parsed.items)) return parsed.items;
-  } catch (_) {}
+
+  } catch (error) {
+    console.error("Old wishlist parsing error:", error);
+  }
+
   return [];
 }
 
 async function importOldGifts() {
   if (!currentUser) return;
+
   const old = findOldGifts();
+
   if (!old.length) {
-    document.getElementById("importStatus").textContent =
-      "No old gifts were found under the expected saved-list key on this device. Your old list has not been changed.";
+    showStatus(
+      "importStatus",
+      "No old gifts found under the expected browser storage key. Your original list has not been changed.",
+      "error"
+    );
     return;
   }
 
-  const alreadyHave = gifts.length;
-  if (alreadyHave && !confirm("Your online list already has gifts. Import the old list anyway?")) return;
+  if (!confirm("Import " + old.length + " gifts into your online wishlist?")) {
+    return;
+  }
 
   const rows = old.map(g => ({
     name: String(g.name || g.title || "Untitled gift"),
@@ -351,33 +588,70 @@ async function importOldGifts() {
     link: String(g.link || g.url || ""),
     category: String(g.category || "Other"),
     notes: String(g.notes || ""),
-    top_pick: Boolean(g.top_pick || g.topPick || g.priority)
+    top_pick: Boolean(g.top_pick || g.topPick || g.priority),
+    owner_id: currentUser.id
   }));
 
-  const { error } = await db.from("gifts").insert(rows);
-  if (error) {
-    document.getElementById("importStatus").textContent =
-      "Import failed: " + error.message;
-    return;
+  $("importButton").disabled = true;
+
+  try {
+    const { error } = await db.from("gifts").insert(rows);
+
+    if (error) throw error;
+
+    showStatus(
+      "importStatus",
+      "Successfully imported " + rows.length + " gifts!",
+      "success"
+    );
+
+    await loadGifts();
+
+  } catch (error) {
+    showStatus(
+      "importStatus",
+      "Import failed: " + error.message,
+      "error"
+    );
+  } finally {
+    $("importButton").disabled = false;
   }
-  document.getElementById("importStatus").textContent =
-    "Imported " + rows.length + " gifts. Please check the list below.";
-  document.getElementById("importButton").disabled = true;
-  await loadGifts();
 }
 
 async function start() {
-  const { data } = await db.auth.getSession();
-  currentUser = data.session ? data.session.user : null;
-  updateOwnerView();
-  await loadGifts();
+  $("loginButton").addEventListener("click", login);
+  $("logoutButton").addEventListener("click", logout);
+  $("saveButton").addEventListener("click", saveGift);
+  $("cancelButton").addEventListener("click", clearForm);
+  $("importButton").addEventListener("click", importOldGifts);
+  $("search").addEventListener("input", renderGifts);
 
-  db.auth.onAuthStateChange((_event, session) => {
-    currentUser = session ? session.user : null;
-    updateOwnerView();
-    loadGifts();
+  $("password").addEventListener("keydown", event => {
+    if (event.key === "Enter") login();
   });
+
+  if (!initializeDatabase()) return;
+
+  try {
+    const { data, error } = await db.auth.getSession();
+
+    if (error) throw error;
+
+    currentUser = data.session ? data.session.user : null;
+    updateOwnerView();
+    await loadGifts();
+
+    db.auth.onAuthStateChange((_event, session) => {
+      currentUser = session ? session.user : null;
+      updateOwnerView();
+      loadGifts();
+    });
+
+  } catch (error) {
+    showStatus("status", "Startup error: " + error.message, "error");
+  }
 }
+
 start();
 </script>
 </body>
