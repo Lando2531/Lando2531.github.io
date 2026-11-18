@@ -14,23 +14,21 @@
   --gold:#d5ad58;
   --cream:#fffaf0;
   --ink:#26352c;
-  --page-bg:linear-gradient(145deg,#f8eee2,#e5eee5);
-  --panel-bg:#fffaf0;
 }
+
 * { box-sizing:border-box; }
 
 body {
   margin:0;
   font-family:Georgia,serif;
   color:var(--ink);
-  background:var(--page-bg);
+  background:linear-gradient(145deg,#f8eee2,#e5eee5);
   min-height:100vh;
-  transition:background .4s;
 }
 
 header {
   text-align:center;
-  padding:48px 18px 32px;
+  padding:55px 18px 30px;
   color:white;
   background:linear-gradient(120deg,#123e2c,#a62632);
   border-bottom:5px solid var(--gold);
@@ -43,16 +41,16 @@ header h1 {
   margin:12px 0 10px;
 }
 
-header p { margin:0; font-size:16px; }
+header p { margin:0; }
 
 main {
-  max-width:1000px;
+  max-width:950px;
   margin:25px auto;
-  padding:0 15px 50px;
+  padding:0 15px 40px;
 }
 
 .panel {
-  background:var(--panel-bg);
+  background:var(--cream);
   border:1px solid #e3d6bd;
   border-radius:16px;
   padding:20px;
@@ -83,10 +81,9 @@ button {
   font-size:15px;
   cursor:pointer;
   margin:4px 3px 4px 0;
-  transition:transform .15s,opacity .15s;
 }
 
-button:hover { transform:translateY(-1px); }
+button:hover { opacity:.9; }
 button:disabled { opacity:.5; cursor:not-allowed; }
 button.red { background:var(--red); }
 button.gold { background:#96702d; }
@@ -101,61 +98,45 @@ button.light { background:#e9e0d1; color:var(--ink); }
 .status {
   font:14px Arial,sans-serif;
   line-height:1.5;
-  margin:10px 0;
 }
 
-.status.error { color:#a62632; }
-.status.success { color:#174c35; }
+.error { color:#a62632; }
+.success { color:#174c35; }
 
 .hidden { display:none !important; }
 
 footer {
   text-align:center;
-  padding:25px;
+  padding:25px 15px 12px;
   color:#667;
 }
 
-hr {
-  border:0;
-  border-top:1px solid #ddd;
-  margin:22px 0;
+.version {
+  font:11px Arial,sans-serif;
+  color:#999;
+  letter-spacing:1px;
+  padding-bottom:18px;
+  text-align:center;
 }
 
-label {
-  font:14px Arial,sans-serif;
-  font-weight:bold;
-}
-
-.tag {
-  display:inline-block;
-  background:#e9eee7;
-  color:var(--green);
-  border-radius:20px;
-  padding:5px 9px;
-  font:12px Arial,sans-serif;
-  margin:3px 0;
-}
-
-/* ANIMATED CHRISTMAS LIGHTS */
+/* CHRISTMAS LIGHTS */
 
 .light-string {
   display:flex;
   justify-content:space-around;
-  align-items:flex-start;
   height:35px;
   padding:0 8px;
   position:absolute;
   top:0;
   left:0;
   width:100%;
-  z-index:2;
   border-top:3px solid #333;
 }
 
 .bulb {
   width:13px;
   height:19px;
-  border-radius:50% 50% 45% 45%;
+  border-radius:50%;
   margin-top:5px;
   background:#f5d35d;
   box-shadow:0 0 12px currentColor;
@@ -164,15 +145,13 @@ label {
 
 .bulb:nth-child(2n) { animation-delay:.4s; }
 .bulb:nth-child(3n) { animation-delay:.8s; }
-.bulb:nth-child(4n) { animation-delay:.2s; }
-
-.bulb:nth-child(4n+1) { background:#e94d4d; color:#e94d4d; }
-.bulb:nth-child(4n+2) { background:#58d68d; color:#58d68d; }
-.bulb:nth-child(4n+3) { background:#65b9ed; color:#65b9ed; }
-.bulb:nth-child(4n) { background:#f5d35d; color:#f5d35d; }
+.bulb:nth-child(4n+1) { background:#e94d4d;color:#e94d4d; }
+.bulb:nth-child(4n+2) { background:#58d68d;color:#58d68d; }
+.bulb:nth-child(4n+3) { background:#65b9ed;color:#65b9ed; }
+.bulb:nth-child(4n) { background:#f5d35d;color:#f5d35d; }
 
 @keyframes twinkle {
-  from { opacity:.55; filter:brightness(.8); }
+  from { opacity:.55; }
   to { opacity:1; filter:brightness(1.5); }
 }
 
@@ -203,16 +182,9 @@ label {
   font:11px Arial,sans-serif;
 }
 
-/* THEME SELECTOR */
-
 .theme-area {
   max-width:250px;
   margin:18px auto 0;
-}
-
-.theme-area select {
-  margin-bottom:0;
-  text-align:center;
 }
 
 /* GIFT CARDS */
@@ -226,18 +198,65 @@ label {
   overflow:hidden;
 }
 
-.gift h3 { margin:0 0 8px; color:var(--red); }
-.gift p { margin:6px 0; line-height:1.5; }
+.gift h3 {
+  margin:0 0 8px;
+  color:var(--red);
+}
+
+.gift p {
+  margin:6px 0;
+  line-height:1.5;
+}
+
 .gift a { color:var(--green); }
 
-.gift-image {
-  width:100%;
-  max-height:260px;
-  object-fit:contain;
-  background:#f5f1e9;
-  border-radius:10px;
-  margin:8px 0 12px;
+.tag {
+  display:inline-block;
+  background:#e9eee7;
+  color:var(--green);
+  border-radius:20px;
+  padding:5px 9px;
+  font:12px Arial,sans-serif;
 }
+
+/* SPECIAL TOP PICK DESIGN */
+
+.gift.top-pick {
+  border:2px solid var(--gold);
+  background:linear-gradient(135deg,#fffdf3,#fff2cf);
+  box-shadow:0 4px 15px #d5ad5840;
+  position:relative;
+}
+
+.gift.top-pick h3 {
+  color:#8a5c12;
+  font-size:21px;
+}
+
+.top-pick-label {
+  display:inline-block;
+  background:linear-gradient(120deg,#d5ad58,#f3d98c);
+  color:#543a13;
+  padding:7px 13px;
+  border-radius:20px;
+  font:bold 12px Arial,sans-serif;
+  margin-bottom:12px;
+  box-shadow:0 2px 5px #0001;
+}
+
+.top-pick-section {
+  border:2px solid var(--gold);
+  border-radius:15px;
+  padding:16px;
+  background:#fff8df;
+  margin-bottom:20px;
+}
+
+.top-pick-section h2 {
+  color:#8a5c12;
+}
+
+/* GALLERY */
 
 .gallery-grid {
   display:grid;
@@ -261,19 +280,19 @@ label {
 }
 
 .gallery-card div { padding:12px; }
-.gallery-card h3 { margin:0 0 5px; font-size:16px; color:var(--red); }
-.gallery-card p { margin:0; font:13px Arial,sans-serif; color:#666; }
+.gallery-card h3 { margin:0 0 5px;font-size:16px;color:var(--red); }
+.gallery-card p { margin:0;font:13px Arial,sans-serif;color:#666; }
 
 /* FIREPLACE */
 
 .fireplace {
   max-width:470px;
-  margin:15px auto;
+  margin:25px auto;
   padding:18px;
   background:linear-gradient(#60402e,#241a17);
   border:8px solid #8c6344;
   border-radius:12px;
-  box-shadow:inset 0 0 15px #0008,0 7px 15px #0002;
+  box-shadow:inset 0 0 15px #0008;
 }
 
 .fireplace-top {
@@ -301,7 +320,6 @@ label {
   background:linear-gradient(#70452a,#3b2114);
   border-radius:50%;
   transform:rotate(-5deg);
-  box-shadow:0 8px 0 #4a2c1b;
 }
 
 .flames {
@@ -323,18 +341,15 @@ label {
   border-radius:50% 50% 30% 30%;
   background:linear-gradient(to top,#e32b10,#ff9e16,#ffe77a);
   transform-origin:bottom;
-  animation:flicker .65s infinite alternate ease-in-out;
+  animation:flicker .65s infinite alternate;
 }
 
-.flame:nth-child(2) {
-  height:110px;
-  width:38px;
-  animation-delay:.2s;
-}
+.flame:nth-child(2) { height:110px;width:38px; }
+.flame:nth-child(3) { height:75px; }
 
-.flame:nth-child(3) {
-  height:75px;
-  animation-delay:.4s;
+@keyframes flicker {
+  from { transform:scaleY(.85) rotate(-4deg); }
+  to { transform:scaleY(1.08) rotate(4deg); }
 }
 
 .fireplace.off .flames { display:none; }
@@ -349,121 +364,7 @@ label {
   place-items:center;
 }
 
-@keyframes flicker {
-  from { transform:scaleY(.85) rotate(-4deg); opacity:.8; }
-  to { transform:scaleY(1.08) rotate(4deg); opacity:1; }
-}
-
-/* RADIO */
-
-.radio {
-  max-width:440px;
-  margin:12px auto;
-  padding:20px;
-  border-radius:15px;
-  background:linear-gradient(145deg,#315b42,#153324);
-  color:white;
-  text-align:center;
-  border:4px solid #b38b4c;
-  box-shadow:0 5px 15px #0002;
-}
-
-.radio-screen {
-  background:#d8e6c6;
-  color:#23402d;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:12px;
-  font:14px Arial,sans-serif;
-}
-
-.radio select {
-  margin:8px 0;
-}
-
-.radio button { background:#b48a42; }
-
-/* SNOW GLOBE */
-
-.globe-wrap {
-  display:flex;
-  justify-content:center;
-  padding:10px;
-}
-
-.snow-globe {
-  width:220px;
-  height:220px;
-  border-radius:50%;
-  border:8px solid #d4e3e7;
-  background:radial-gradient(circle at 35% 25%,#ffffff,#a8d4e6 75%,#7aafc4);
-  position:relative;
-  overflow:hidden;
-  box-shadow:inset -12px -12px 25px #32677b55,
-             0 8px 15px #0002;
-  transition:transform .3s;
-}
-
-.snow-globe.shaking {
-  animation:shake .5s ease-in-out;
-}
-
-@keyframes shake {
-  0%,100% { transform:rotate(0); }
-  20% { transform:rotate(-8deg); }
-  40% { transform:rotate(8deg); }
-  60% { transform:rotate(-6deg); }
-  80% { transform:rotate(5deg); }
-}
-
-.globe-tree {
-  position:absolute;
-  bottom:30px;
-  left:83px;
-  font-size:70px;
-  z-index:2;
-}
-
-.globe-house {
-  position:absolute;
-  bottom:35px;
-  left:20px;
-  font-size:42px;
-  z-index:2;
-}
-
-.globe-snow {
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-
-.globe-flake {
-  position:absolute;
-  top:-15px;
-  color:white;
-  font-size:12px;
-  opacity:.9;
-  animation:globeFall 4s linear infinite;
-}
-
-.globe-flake:nth-child(2n) { animation-duration:5s; }
-.globe-flake:nth-child(3n) { animation-duration:3.2s; }
-
-@keyframes globeFall {
-  to { transform:translateY(240px) translateX(25px); }
-}
-
-.globe-base {
-  width:150px;
-  height:32px;
-  margin:-2px auto 0;
-  background:linear-gradient(#a77b40,#65421f);
-  border-radius:8px 8px 18px 18px;
-  box-shadow:0 5px 8px #0002;
-}
-
-/* FALLING PAGE SNOW */
+/* SNOW */
 
 #snowCanvas {
   position:fixed;
@@ -475,32 +376,27 @@ label {
 /* THEMES */
 
 body.theme-winter {
-  --page-bg:linear-gradient(145deg,#eaf5ff,#c9dce9);
-  --panel-bg:#f8fcff;
-  --green:#24516f;
   --red:#386b91;
+  --green:#24516f;
   --gold:#9bbdd5;
+  background:linear-gradient(145deg,#eaf5ff,#c9dce9);
 }
 
 body.theme-gingerbread {
-  --page-bg:linear-gradient(145deg,#f5e1c8,#e5c29b);
-  --panel-bg:#fff5e7;
-  --green:#80502d;
   --red:#a34d2c;
+  --green:#80502d;
   --gold:#d9a55d;
+  background:linear-gradient(145deg,#f5e1c8,#e5c29b);
 }
 
 body.theme-northpole {
-  --page-bg:linear-gradient(145deg,#e7e8f5,#d5d8eb);
-  --panel-bg:#fffaff;
-  --green:#353b72;
   --red:#a02d50;
-  --gold:#d5ad58;
+  --green:#353b72;
+  background:linear-gradient(145deg,#e7e8f5,#d5d8eb);
 }
 
 @media(max-width:600px) {
   header { padding-top:55px; }
-  .fireplace { margin-top:25px; }
   .gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 </style>
@@ -534,8 +430,7 @@ body.theme-northpole {
   </div>
 
   <div class="theme-area">
-    <select id="themeSelect" onchange="changeTheme(this.value)"
-      aria-label="Choose website theme">
+    <select id="themeSelect" onchange="changeTheme(this.value)">
       <option value="classic">Classic Christmas</option>
       <option value="winter">Winter Wonderland</option>
       <option value="gingerbread">Gingerbread</option>
@@ -553,9 +448,7 @@ body.theme-northpole {
 <section class="panel">
   <h2>🎁 The Wishlist</h2>
   <p class="small">Browse the gifts on my Christmas list.</p>
-
-  <input id="search" placeholder="Search my wishlist..."
-    oninput="renderGifts()">
+  <input id="search" placeholder="Search my wishlist..." oninput="renderGifts()">
 
   <div id="giftList">Loading gifts...</div>
   <div id="status" class="status" role="status"></div>
@@ -563,9 +456,7 @@ body.theme-northpole {
 
 <section class="panel">
   <h2>🖼️ Gift Gallery</h2>
-  <p class="small">
-    A picture-perfect look at some of the gifts on my list.
-  </p>
+  <p class="small">A picture-perfect look at the gifts on my list.</p>
   <div id="giftGallery" class="gallery-grid">
     <p class="small">Loading gallery...</p>
   </div>
@@ -573,9 +464,7 @@ body.theme-northpole {
 
 <section class="panel">
   <h2>🔥 Cozy Christmas Fireplace</h2>
-  <p class="small">
-    Settle in by the fire. Turn the flames on or off whenever you like.
-  </p>
+  <p class="small">Settle in by the fire. Turn the flames on or off whenever you like.</p>
 
   <div class="fireplace" id="fireplace">
     <div class="fireplace-top"></div>
@@ -590,103 +479,28 @@ body.theme-northpole {
   </div>
 
   <div style="text-align:center">
-    <button onclick="toggleFireplace()" id="fireButton">
-      Turn Fireplace Off
-    </button>
-  </div>
-</section>
-
-<section class="panel">
-  <h2>📻 Christmas Radio</h2>
-  <p class="small">
-    Put on some Christmas music while you browse the wishlist.
-    Press play to start the stream.
-  </p>
-
-  <div class="radio">
-    <div style="font-size:32px">📻</div>
-    <div class="radio-screen" id="radioStatus">
-      Christmas Radio — Ready to play
-    </div>
-
-    <label for="radioStation" style="color:white">Station</label>
-    <select id="radioStation">
-      <option value="https://ice.somafm.com/christmas">
-        SomaFM Christmas Lounge
-      </option>
-    </select>
-
-    <audio id="christmasAudio" preload="none"></audio>
-
-    <button onclick="toggleRadio()" id="radioButton">
-      ▶ Play Christmas Radio
-    </button>
-  </div>
-
-  <p class="small">
-    Music is streamed from an external radio service. Availability
-    depends on that service and your internet connection.
-  </p>
-</section>
-
-<section class="panel">
-  <h2>❄️ Christmas Snow Globe</h2>
-  <p class="small">
-    Give the globe a shake and watch the snow swirl around the little
-    Christmas scene.
-  </p>
-
-  <div class="globe-wrap">
-    <div>
-      <div class="snow-globe" id="snowGlobe">
-        <div class="globe-snow" id="globeSnow"></div>
-        <div class="globe-house">🏠</div>
-        <div class="globe-tree">🎄</div>
-      </div>
-      <div class="globe-base"></div>
-    </div>
-  </div>
-
-  <div style="text-align:center">
-    <button class="gold" onclick="shakeGlobe()">Shake Snow Globe ✨</button>
+    <button onclick="toggleFireplace()" id="fireButton">Turn Fireplace Off</button>
   </div>
 </section>
 
 <section class="panel">
   <h2>🔐 Owner Login</h2>
-
-  <p class="small" id="accountStatus">
-    Sign in to manage your wishlist.
-  </p>
+  <p class="small" id="accountStatus">Sign in to manage your wishlist.</p>
 
   <div id="loginArea">
     <label for="email">Your email address</label>
-    <input id="email" type="email" autocomplete="email"
-      placeholder="Enter your account email">
-
-    <button id="loginButton" type="button" onclick="login()">
-      Send Login Link
-    </button>
-
-    <p class="small">
-      We'll email you a secure sign-in link.
-      You do not need a password.
-    </p>
-
-    <p id="loginStatus" class="status" role="status"
-      aria-live="polite"></p>
+    <input id="email" type="email" autocomplete="email" placeholder="Enter your account email">
+    <button id="loginButton" onclick="login()">Send Login Link</button>
+    <p class="small">We'll email you a secure sign-in link. No password needed.</p>
+    <p id="loginStatus" class="status" role="status"></p>
   </div>
 
-  <button id="logoutButton" class="red hidden" onclick="logout()">
-    Sign Out
-  </button>
+  <button id="logoutButton" class="red hidden" onclick="logout()">Sign Out</button>
 </section>
 
 <section id="ownerArea" class="panel hidden">
   <h2>✏️ Manage My Wishlist</h2>
-  <p class="small">
-    Only your signed-in account can add, edit or remove gifts.
-  </p>
+  <p class="small">Only your signed-in account can add, edit, or remove gifts.</p>
 
   <h3 id="formHeading">Add a gift</h3>
 
@@ -700,14 +514,8 @@ body.theme-northpole {
   <input id="giftLink" placeholder="Product link (optional)">
 
   <label for="giftImage">Gift image URL</label>
-  <input id="giftImage" type="url"
-    placeholder="Paste a direct image URL (optional)">
-
-  <p class="small">
-    Add a direct link to an image ending in a format such as .jpg,
-    .png, or .webp. The image will appear in the gallery and on the
-    gift card.
-  </p>
+  <input id="giftImage" type="url" placeholder="Paste a direct image URL (optional)">
+  <p class="small">Images will appear in the gift card and gallery.</p>
 
   <label for="giftCategory">Category</label>
   <select id="giftCategory">
@@ -729,23 +537,14 @@ body.theme-northpole {
   </label>
 
   <br>
-
   <button onclick="saveGift()">Save Gift</button>
   <button class="light" onclick="clearForm()">Cancel</button>
 
   <hr>
 
   <h3>Import your old gifts</h3>
-
-  <p class="small">
-    This checks the wishlist saved by your previous version
-    on this device. It does not erase your old list.
-  </p>
-
-  <button class="gold" id="importButton" onclick="importOldGifts()">
-    Import My Existing Gifts
-  </button>
-
+  <p class="small">This checks the wishlist saved by your previous version on this device. It does not erase your old list.</p>
+  <button class="gold" id="importButton" onclick="importOldGifts()">Import My Existing Gifts</button>
   <p id="importStatus" class="small"></p>
 </section>
 
@@ -754,19 +553,13 @@ body.theme-northpole {
 <footer>
   Made with Christmas spirit ❤️
 </footer>
+<div class="version">VERSION 3.1</div>
 
 <script>
-/* =====================================
-   SUPABASE CONFIGURATION
-===================================== */
+/* SUPABASE CONFIGURATION */
 
 const SUPABASE_URL = "https://dgyhqohyuotjzashttmb.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_Pm-yTEcJGUHTa2bofqmAzw_MLtd8eEi";
-
-/* =====================================
-   INITIALIZATION
-===================================== */
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishablePm-yTEcJGUHTa2bofqmAzw_MLtd8eEi";
 
 let db = null;
 let gifts = [];
@@ -778,7 +571,7 @@ function $(id) {
   return document.getElementById(id);
 }
 
-function setStatus(id, text, type = "") {
+function setStatus(id,text,type="") {
   const element = $(id);
   element.textContent = text;
   element.className = "status " + type;
@@ -786,18 +579,7 @@ function setStatus(id, text, type = "") {
 
 function initializeSupabase() {
   if (!window.supabase) {
-    setStatus("status",
-      "Supabase library did not load. Refresh the page.", "error");
-    return false;
-  }
-
-  if (
-    SUPABASE_URL.includes("PASTE_") ||
-    SUPABASE_PUBLISHABLE_KEY.includes("PASTE_")
-  ) {
-    setStatus("status",
-      "Please add your Supabase Project URL and Publishable key.",
-      "error");
+    setStatus("status","Supabase library did not load. Refresh the page.","error");
     return false;
   }
 
@@ -806,28 +588,25 @@ function initializeSupabase() {
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY,
       {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
+        auth:{
+          persistSession:true,
+          autoRefreshToken:true,
+          detectSessionInUrl:true
         }
       }
     );
     return true;
-  } catch (error) {
-    setStatus("status", error.message, "error");
+  } catch(error) {
+    setStatus("status",error.message,"error");
     return false;
   }
 }
 
-/* =====================================
-   VERSION 2.0 FEATURES
-===================================== */
+/* COUNTDOWN */
 
 function updateCountdown() {
   const christmas = new Date("December 25, 2026 00:00:00").getTime();
-  const now = Date.now();
-  const distance = christmas - now;
+  const distance = christmas - Date.now();
 
   if (distance <= 0) {
     $("countdown").innerHTML =
@@ -836,49 +615,38 @@ function updateCountdown() {
   }
 
   $("days").textContent = Math.floor(distance / 86400000);
-  $("hours").textContent = Math.floor((distance % 86400000) / 3600000);
-  $("minutes").textContent = Math.floor((distance % 3600000) / 60000);
-  $("seconds").textContent = Math.floor((distance % 60000) / 1000);
+  $("hours").textContent = Math.floor(distance % 86400000 / 3600000);
+  $("minutes").textContent = Math.floor(distance % 3600000 / 60000);
+  $("seconds").textContent = Math.floor(distance % 60000 / 1000);
 }
 
 function updateGreeting() {
-  const now = new Date();
-  const month = now.getMonth();
-  const day = now.getDate();
+  const month = new Date().getMonth();
+  const day = new Date().getDate();
 
   let greeting = "A little Christmas magic, one gift at a time.";
 
-  if (month === 11 && day === 25) {
-    greeting = "Merry Christmas! 🎄";
-  } else if (month === 11 && day > 25) {
-    greeting = "Hope you had a wonderful Christmas!";
-  } else if (month === 11) {
-    greeting = "Christmas is almost here! ✨";
-  } else if (month === 10) {
-    greeting = "The Christmas countdown is on!";
-  } else if (month >= 8) {
-    greeting = "The most wonderful time of the year is getting closer!";
-  }
+  if (month === 11 && day === 25) greeting = "Merry Christmas! 🎄";
+  else if (month === 11 && day > 25) greeting = "Hope you had a wonderful Christmas!";
+  else if (month === 11) greeting = "Christmas is almost here! ✨";
+  else if (month === 10) greeting = "The Christmas countdown is on!";
+  else if (month >= 8) greeting = "The most wonderful time of the year is getting closer!";
 
   $("seasonGreeting").textContent = greeting;
 }
 
+/* THEMES */
+
 function changeTheme(theme) {
   document.body.classList.remove(
-    "theme-winter",
-    "theme-gingerbread",
-    "theme-northpole"
+    "theme-winter","theme-gingerbread","theme-northpole"
   );
 
-  if (theme === "winter") {
-    document.body.classList.add("theme-winter");
-  } else if (theme === "gingerbread") {
-    document.body.classList.add("theme-gingerbread");
-  } else if (theme === "northpole") {
-    document.body.classList.add("theme-northpole");
+  if (theme !== "classic") {
+    document.body.classList.add("theme-" + theme);
   }
 
-  localStorage.setItem("christmasTheme", theme);
+  localStorage.setItem("christmasTheme",theme);
 }
 
 function loadTheme() {
@@ -887,13 +655,9 @@ function loadTheme() {
   changeTheme(saved);
 }
 
-/* =====================================
-   FALLING SNOW
-===================================== */
+/* FALLING SNOW */
 
 let snowEnabled = true;
-let snowflakes = [];
-let snowAnimation = null;
 
 function setupSnow() {
   const canvas = $("snowCanvas");
@@ -905,14 +669,14 @@ function setupSnow() {
   }
 
   resize();
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize",resize);
 
-  snowflakes = Array.from({length:75}, () => ({
-    x:Math.random() * canvas.width,
-    y:Math.random() * canvas.height,
-    radius:Math.random() * 3 + 1,
-    speed:Math.random() * 1.5 + .5,
-    drift:Math.random() * .8 - .4
+  const flakes = Array.from({length:75},() => ({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    radius:Math.random()*3+1,
+    speed:Math.random()*1.5+.5,
+    drift:Math.random()*.8-.4
   }));
 
   function draw() {
@@ -921,9 +685,9 @@ function setupSnow() {
     if (snowEnabled) {
       ctx.fillStyle = "rgba(255,255,255,.8)";
 
-      snowflakes.forEach(f => {
+      flakes.forEach(f => {
         ctx.beginPath();
-        ctx.arc(f.x,f.y,f.radius,0,Math.PI * 2);
+        ctx.arc(f.x,f.y,f.radius,0,Math.PI*2);
         ctx.fill();
 
         f.y += f.speed;
@@ -931,15 +695,14 @@ function setupSnow() {
 
         if (f.y > canvas.height) {
           f.y = -5;
-          f.x = Math.random() * canvas.width;
+          f.x = Math.random()*canvas.width;
         }
-
         if (f.x > canvas.width) f.x = 0;
         if (f.x < 0) f.x = canvas.width;
       });
     }
 
-    snowAnimation = requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
   }
 
   draw();
@@ -949,8 +712,7 @@ function toggleSnow() {
   snowEnabled = !snowEnabled;
   $("snowButton").textContent =
     snowEnabled ? "Turn Snow Off ❄️" : "Turn Snow On ❄️";
-
-  localStorage.setItem("christmasSnow", snowEnabled ? "on" : "off");
+  localStorage.setItem("christmasSnow",snowEnabled ? "on" : "off");
 }
 
 function loadSnowPreference() {
@@ -959,118 +721,21 @@ function loadSnowPreference() {
     snowEnabled ? "Turn Snow Off ❄️" : "Turn Snow On ❄️";
 }
 
-/* =====================================
-   FIREPLACE
-===================================== */
+/* FIREPLACE */
 
 let fireplaceOn = true;
 
 function toggleFireplace() {
   fireplaceOn = !fireplaceOn;
-
-  $("fireplace").classList.toggle("off", !fireplaceOn);
+  $("fireplace").classList.toggle("off",!fireplaceOn);
   $("fireButton").textContent =
     fireplaceOn ? "Turn Fireplace Off" : "Turn Fireplace On";
 }
 
-/* =====================================
-   CHRISTMAS RADIO
-===================================== */
-
-let radioPlaying = false;
-
-function toggleRadio() {
-  const audio = $("christmasAudio");
-  const station = $("radioStation").value;
-
-  if (!radioPlaying) {
-    if (!audio.src || audio.src !== station) {
-      audio.src = station;
-    }
-
-    $("radioStatus").textContent = "Connecting to Christmas Radio...";
-
-    audio.play().then(() => {
-      radioPlaying = true;
-      $("radioButton").textContent = "⏸ Pause Christmas Radio";
-      $("radioStatus").textContent = "Now playing Christmas music 🎄";
-    }).catch(() => {
-      radioPlaying = false;
-      $("radioStatus").textContent =
-        "Couldn't start the stream. Try again or check your connection.";
-      $("radioButton").textContent = "▶ Play Christmas Radio";
-    });
-  } else {
-    audio.pause();
-    radioPlaying = false;
-    $("radioButton").textContent = "▶ Play Christmas Radio";
-    $("radioStatus").textContent = "Radio paused";
-  }
-}
-
-$("radioStation").addEventListener("change", () => {
-  const audio = $("christmasAudio");
-  const wasPlaying = radioPlaying;
-
-  audio.pause();
-  radioPlaying = false;
-  audio.src = $("radioStation").value;
-
-  $("radioButton").textContent = "▶ Play Christmas Radio";
-  $("radioStatus").textContent = "Station selected — ready to play";
-
-  if (wasPlaying) toggleRadio();
-});
-
-$("christmasAudio").addEventListener("error", () => {
-  radioPlaying = false;
-  $("radioButton").textContent = "▶ Play Christmas Radio";
-  $("radioStatus").textContent = "The radio stream is currently unavailable.";
-});
-
-/* =====================================
-   SNOW GLOBE
-===================================== */
-
-function createGlobeSnow() {
-  const container = $("globeSnow");
-  container.innerHTML = "";
-
-  for (let i = 0; i < 30; i++) {
-    const flake = document.createElement("span");
-    flake.className = "globe-flake";
-    flake.textContent = "❄";
-    flake.style.left = Math.random() * 100 + "%";
-    flake.style.animationDelay = Math.random() * 4 + "s";
-    flake.style.fontSize = (8 + Math.random() * 9) + "px";
-    container.appendChild(flake);
-  }
-}
-
-function shakeGlobe() {
-  const globe = $("snowGlobe");
-
-  globe.classList.remove("shaking");
-  void globe.offsetWidth;
-  globe.classList.add("shaking");
-
-  const flakes = $("globeSnow").children;
-
-  Array.from(flakes).forEach(flake => {
-    flake.style.animationDuration = (1.5 + Math.random() * 2) + "s";
-    flake.style.animationDelay = "0s";
-  });
-
-  setTimeout(() => {
-    globe.classList.remove("shaking");
-  }, 550);
-}
-
-/* =====================================
-   IMAGE URL STORAGE
-   Uses the existing notes column.
-   No database column is required.
-===================================== */
+/* IMAGE DATA
+   Image URLs are stored in the existing notes column.
+   No database changes are needed.
+*/
 
 const IMAGE_MARKER = "[[WISHLIST_IMAGE:";
 
@@ -1079,13 +744,9 @@ function cleanImageURL(value) {
 
   try {
     const url = new URL(value.trim());
-
-    if (url.protocol !== "https:" && url.protocol !== "http:") {
-      return "";
-    }
-
+    if (!["https:","http:"].includes(url.protocol)) return "";
     return url.href;
-  } catch (_) {
+  } catch(_) {
     return "";
   }
 }
@@ -1099,36 +760,26 @@ function extractGiftData(notes) {
   if (match) {
     try {
       image = cleanImageURL(decodeURIComponent(match[1]));
-    } catch (_) {}
+    } catch(_) {}
   }
 
-  const cleanNotes = text
-    .replace(/\n?\[\[WISHLIST_IMAGE:[^\]]+\]\]/g, "")
-    .trim();
-
   return {
-    notes:cleanNotes,
+    notes:text.replace(/\n?\[\[WISHLIST_IMAGE:[^\]]+\]\]/g,"").trim(),
     image
   };
 }
 
-function makeStoredNotes(notes, image) {
+function makeStoredNotes(notes,image) {
   const cleanNotes = String(notes || "").trim();
   const safeImage = cleanImageURL(image);
 
   if (!safeImage) return cleanNotes;
 
-  const marker = IMAGE_MARKER +
-    encodeURIComponent(safeImage) + "]]";
-
-  return cleanNotes
-    ? cleanNotes + "\n" + marker
-    : marker;
+  const marker = IMAGE_MARKER + encodeURIComponent(safeImage) + "]]";
+  return cleanNotes ? cleanNotes + "\n" + marker : marker;
 }
 
-/* =====================================
-   EMAIL MAGIC LINK LOGIN
-===================================== */
+/* LOGIN */
 
 async function login() {
   if (loading) return;
@@ -1136,14 +787,7 @@ async function login() {
   const email = $("email").value.trim();
 
   if (!email) {
-    setStatus("loginStatus",
-      "Please enter your email address.", "error");
-    return;
-  }
-
-  if (!db) {
-    setStatus("loginStatus",
-      "Supabase is not connected. Refresh the page.", "error");
+    setStatus("loginStatus","Please enter your email address.","error");
     return;
   }
 
@@ -1151,28 +795,26 @@ async function login() {
   $("loginButton").disabled = true;
   $("loginButton").textContent = "Sending...";
 
-  setStatus("loginStatus", "Sending your login link...");
+  setStatus("loginStatus","Sending your login link...");
 
   try {
-    const { error } = await db.auth.signInWithOtp({
-      email:email,
+    const {error} = await db.auth.signInWithOtp({
+      email,
       options:{
         shouldCreateUser:false,
-        emailRedirectTo:
-          window.location.origin + window.location.pathname
+        emailRedirectTo:window.location.origin + window.location.pathname
       }
     });
 
     if (error) throw error;
 
-    setStatus("loginStatus",
-      "Login link sent! Check your email, including your spam folder. Open the link on this same device or browser.",
-      "success");
-
-  } catch (error) {
-    setStatus("loginStatus",
-      "Could not send login link: " + error.message,
-      "error");
+    setStatus(
+      "loginStatus",
+      "Login link sent! Check your email and spam folder. Open the link on this same device or browser.",
+      "success"
+    );
+  } catch(error) {
+    setStatus("loginStatus","Could not send login link: " + error.message,"error");
   } finally {
     loading = false;
     $("loginButton").disabled = false;
@@ -1180,17 +822,11 @@ async function login() {
   }
 }
 
-/* =====================================
-   SIGN OUT
-===================================== */
-
 async function logout() {
-  if (!db) return;
-
-  const { error } = await db.auth.signOut();
+  const {error} = await db.auth.signOut();
 
   if (error) {
-    setStatus("status", error.message, "error");
+    setStatus("status",error.message,"error");
     return;
   }
 
@@ -1200,16 +836,14 @@ async function logout() {
   await loadGifts();
 }
 
-/* =====================================
-   OWNER VIEW
-===================================== */
+/* OWNER VIEW */
 
 function updateOwnerView() {
   const signedIn = !!currentUser;
 
-  $("ownerArea").classList.toggle("hidden", !signedIn);
-  $("loginArea").classList.toggle("hidden", signedIn);
-  $("logoutButton").classList.toggle("hidden", !signedIn);
+  $("ownerArea").classList.toggle("hidden",!signedIn);
+  $("loginArea").classList.toggle("hidden",signedIn);
+  $("logoutButton").classList.toggle("hidden",!signedIn);
 
   $("accountStatus").textContent = signedIn
     ? "You're signed in! You can manage your gifts."
@@ -1219,41 +853,30 @@ function updateOwnerView() {
   renderGallery();
 }
 
-/* =====================================
-   LOAD GIFTS
-===================================== */
+/* LOAD GIFTS */
 
 async function loadGifts() {
-  if (!db) return;
-
-  setStatus("status", "Loading your wishlist...");
+  setStatus("status","Loading your wishlist...");
 
   try {
-    const { data, error } = await db
+    const {data,error} = await db
       .from("gifts")
       .select("*")
-      .order("created_at", {ascending:true});
+      .order("created_at",{ascending:true});
 
     if (error) throw error;
 
     gifts = data || [];
-
     renderGifts();
     renderGallery();
 
-    setStatus("status",
-      gifts.length ? "" : "No gifts have been added yet.");
-
-  } catch (error) {
-    setStatus("status",
-      "Couldn't load gifts: " + error.message,
-      "error");
+    setStatus("status",gifts.length ? "" : "No gifts have been added yet.");
+  } catch(error) {
+    setStatus("status","Couldn't load gifts: " + error.message,"error");
   }
 }
 
-/* =====================================
-   DISPLAY GIFTS
-===================================== */
+/* RENDER WISHLIST */
 
 function renderGifts() {
   const list = $("giftList");
@@ -1263,26 +886,32 @@ function renderGifts() {
 
   const visible = gifts.filter(g => {
     const details = extractGiftData(g.notes);
-
-    return [
-      g.name,
-      g.category,
-      details.notes
-    ].join(" ").toLowerCase().includes(search);
+    return [g.name,g.category,details.notes]
+      .join(" ").toLowerCase().includes(search);
   });
+
+  list.innerHTML = "";
 
   if (!visible.length) {
     list.innerHTML = "<p>No gifts found.</p>";
     return;
   }
 
-  list.innerHTML = "";
+  // Show top picks first.
+  visible.sort((a,b) => Number(b.top_pick) - Number(a.top_pick));
 
   visible.forEach(g => {
     const details = extractGiftData(g.notes);
-
     const card = document.createElement("article");
-    card.className = "gift";
+
+    card.className = g.top_pick ? "gift top-pick" : "gift";
+
+    if (g.top_pick) {
+      const label = document.createElement("div");
+      label.className = "top-pick-label";
+      label.textContent = "⭐ TOP PICK ⭐";
+      card.appendChild(label);
+    }
 
     if (details.image) {
       const image = document.createElement("img");
@@ -1318,8 +947,7 @@ function renderGifts() {
     if (g.link) {
       try {
         const url = new URL(g.link);
-
-        if (url.protocol === "https:" || url.protocol === "http:") {
+        if (["https:","http:"].includes(url.protocol)) {
           const link = document.createElement("a");
           link.href = url.href;
           link.target = "_blank";
@@ -1327,7 +955,7 @@ function renderGifts() {
           link.textContent = "View gift";
           card.appendChild(link);
         }
-      } catch (_) {}
+      } catch(_) {}
     }
 
     if (currentUser && g.owner_id === currentUser.id) {
@@ -1344,7 +972,7 @@ function renderGifts() {
       remove.textContent = "Delete";
       remove.onclick = () => deleteGift(g.id);
 
-      actions.append(edit, remove);
+      actions.append(edit,remove);
       card.appendChild(actions);
     }
 
@@ -1352,29 +980,22 @@ function renderGifts() {
   });
 }
 
-/* =====================================
-   GIFT IMAGE GALLERY
-===================================== */
+/* GIFT GALLERY */
 
 function renderGallery() {
   const gallery = $("giftGallery");
-  if (!gallery) return;
-
   gallery.innerHTML = "";
 
-  const picturedGifts = gifts.filter(g =>
-    extractGiftData(g.notes).image
-  );
+  const pictured = gifts.filter(g => extractGiftData(g.notes).image);
 
-  if (!picturedGifts.length) {
+  if (!pictured.length) {
     gallery.innerHTML =
-      "<p class='small'>No gift pictures yet. Sign in and add an image URL to a gift to start your gallery.</p>";
+      "<p class='small'>No gift pictures yet. Add an image URL to a gift to start your gallery.</p>";
     return;
   }
 
-  picturedGifts.forEach(g => {
+  pictured.forEach(g => {
     const details = extractGiftData(g.notes);
-
     const card = document.createElement("article");
     card.className = "gallery-card";
 
@@ -1382,19 +1003,11 @@ function renderGallery() {
     image.src = details.image;
     image.alt = g.name || "Wishlist gift";
     image.loading = "lazy";
-
-    image.onerror = () => {
-      card.remove();
-      if (!gallery.children.length) {
-        gallery.innerHTML =
-          "<p class='small'>The saved gift images could not be loaded.</p>";
-      }
-    };
+    image.onerror = () => card.remove();
 
     const info = document.createElement("div");
-
     const title = document.createElement("h3");
-    title.textContent = g.top_pick ? "⭐ " + g.name : g.name;
+    title.textContent = (g.top_pick ? "⭐ " : "") + g.name;
 
     const category = document.createElement("p");
     category.textContent = g.category || "Other";
@@ -1405,9 +1018,7 @@ function renderGallery() {
   });
 }
 
-/* =====================================
-   CLEAR FORM
-===================================== */
+/* FORM */
 
 function clearForm() {
   editingId = null;
@@ -1420,13 +1031,8 @@ function clearForm() {
   $("formHeading").textContent = "Add a gift";
 }
 
-/* =====================================
-   EDIT GIFT
-===================================== */
-
 function editGift(g) {
   editingId = g.id;
-
   const details = extractGiftData(g.notes);
 
   $("giftName").value = g.name || "";
@@ -1438,33 +1044,22 @@ function editGift(g) {
   $("giftTop").checked = !!g.top_pick;
 
   $("formHeading").textContent = "Edit gift";
-
   $("ownerArea").scrollIntoView({behavior:"smooth"});
 }
 
-/* =====================================
-   SAVE GIFT
-===================================== */
+/* SAVE GIFT */
 
 async function saveGift() {
-  if (!currentUser) {
-    alert("Please sign in first.");
-    return;
-  }
+  if (!currentUser) return alert("Please sign in first.");
 
   const name = $("giftName").value.trim();
-
-  if (!name) {
-    alert("Please enter a gift name.");
-    return;
-  }
+  if (!name) return alert("Please enter a gift name.");
 
   const imageInput = $("giftImage").value.trim();
   const image = cleanImageURL(imageInput);
 
   if (imageInput && !image) {
-    alert("Please enter a valid image URL beginning with http:// or https://.");
-    return;
+    return alert("Please enter a valid image URL beginning with https:// or http://.");
   }
 
   const item = {
@@ -1472,7 +1067,7 @@ async function saveGift() {
     price:$("giftPrice").value.trim(),
     link:$("giftLink").value.trim(),
     category:$("giftCategory").value,
-    notes:makeStoredNotes($("giftNotes").value, image),
+    notes:makeStoredNotes($("giftNotes").value,image),
     top_pick:$("giftTop").checked
   };
 
@@ -1480,75 +1075,55 @@ async function saveGift() {
     let result;
 
     if (editingId) {
-      result = await db
-        .from("gifts")
+      result = await db.from("gifts")
         .update(item)
-        .eq("id", editingId)
-        .eq("owner_id", currentUser.id);
+        .eq("id",editingId)
+        .eq("owner_id",currentUser.id);
     } else {
       item.owner_id = currentUser.id;
-
-      result = await db
-        .from("gifts")
-        .insert(item);
+      result = await db.from("gifts").insert(item);
     }
 
     if (result.error) throw result.error;
 
     clearForm();
     await loadGifts();
-
     alert("Gift saved successfully!");
-
-  } catch (error) {
+  } catch(error) {
     alert("Couldn't save gift: " + error.message);
   }
 }
 
-/* =====================================
-   DELETE GIFT
-===================================== */
+/* DELETE GIFT */
 
 async function deleteGift(id) {
-  if (!currentUser) return;
-
-  if (!confirm("Delete this gift from your wishlist?")) {
-    return;
-  }
+  if (!currentUser || !confirm("Delete this gift from your wishlist?")) return;
 
   try {
-    const { error } = await db
-      .from("gifts")
+    const {error} = await db.from("gifts")
       .delete()
-      .eq("id", id)
-      .eq("owner_id", currentUser.id);
+      .eq("id",id)
+      .eq("owner_id",currentUser.id);
 
     if (error) throw error;
-
     await loadGifts();
-
-  } catch (error) {
+  } catch(error) {
     alert("Couldn't delete: " + error.message);
   }
 }
 
-/* =====================================
-   IMPORT OLD GIFTS
-===================================== */
+/* IMPORT OLD GIFTS */
 
 function findOldGifts() {
   const raw = localStorage.getItem("christmasWishlist2026");
-
   if (!raw) return [];
 
   try {
     const parsed = JSON.parse(raw);
-
     if (Array.isArray(parsed)) return parsed;
-    if (parsed && Array.isArray(parsed.gifts)) return parsed.gifts;
-    if (parsed && Array.isArray(parsed.items)) return parsed.items;
-
-  } catch (_) {}
+    if (Array.isArray(parsed.gifts)) return parsed.gifts;
+    if (Array.isArray(parsed.items)) return parsed.items;
+  } catch(_) {}
 
   return [];
 }
@@ -1560,14 +1135,12 @@ async function importOldGifts() {
 
   if (!old.length) {
     $("importStatus").textContent =
-      "No old gifts were found under the expected saved-list key on this device. Your old list has not been changed.";
+      "No old gifts were found. Your old list has not been changed.";
     return;
   }
 
-  if (
-    gifts.length &&
-    !confirm("Your online list already has gifts. Import the old list anyway?")
-  ) {
+  if (gifts.length &&
+      !confirm("Your online list already has gifts. Import the old list anyway?")) {
     return;
   }
 
@@ -1582,34 +1155,25 @@ async function importOldGifts() {
   }));
 
   try {
-    const { error } = await db
-      .from("gifts")
-      .insert(rows);
-
+    const {error} = await db.from("gifts").insert(rows);
     if (error) throw error;
 
     $("importStatus").textContent =
       "Imported " + rows.length + " gifts. Please check your wishlist.";
 
     $("importButton").disabled = true;
-
     await loadGifts();
-
-  } catch (error) {
-    $("importStatus").textContent =
-      "Import failed: " + error.message;
+  } catch(error) {
+    $("importStatus").textContent = "Import failed: " + error.message;
   }
 }
 
-/* =====================================
-   START WEBSITE
-===================================== */
+/* START WEBSITE */
 
 async function start() {
   loadTheme();
   loadSnowPreference();
   setupSnow();
-  createGlobeSnow();
   updateCountdown();
   updateGreeting();
 
@@ -1617,24 +1181,22 @@ async function start() {
 
   if (!initializeSupabase()) return;
 
-  db.auth.onAuthStateChange((event, session) => {
-    currentUser = session ? session.user : null;
-    updateOwnerView();
-
-    if (event !== "INITIAL_SESSION") {
-      loadGifts();
-    }
-  });
-
   try {
-    const { data, error } = await db.auth.getSession();
-
+    const {data,error} = await db.auth.getSession();
     if (error) throw error;
 
     currentUser = data.session ? data.session.user : null;
-
     updateOwnerView();
     await loadGifts();
+
+    db.auth.onAuthStateChange((event,session) => {
+      currentUser = session ? session.user : null;
+      updateOwnerView();
+
+      if (event !== "INITIAL_SESSION") {
+        loadGifts();
+      }
+    });
 
     if (window.location.hash.includes("access_token")) {
       history.replaceState(
@@ -1644,10 +1206,8 @@ async function start() {
       );
     }
 
-  } catch (error) {
-    setStatus("status",
-      "Could not initialize your session: " + error.message,
-      "error");
+  } catch(error) {
+    setStatus("status","Could not initialize session: " + error.message,"error");
   }
 }
 
