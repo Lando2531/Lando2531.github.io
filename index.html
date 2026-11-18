@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Christmas Wishlist 🎄</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root {
   --red:#a62632;
@@ -33,7 +34,7 @@ header h1 {
   font-size:clamp(32px,8vw,48px);
   margin:0 0 10px;
 }
-header p { margin:0; }
+header p { margin:0; font-size:16px; }
 main {
   max-width:850px;
   margin:25px auto;
@@ -70,16 +71,20 @@ button {
 }
 button.red { background:var(--red); }
 button.gold { background:#96702d; }
-button.light { background:#e9e0d1; color:#26352c; }
-button:disabled { opacity:.5; cursor:wait; }
-.small { font:13px Arial,sans-serif; color:#666; }
-.status {
-  margin:10px 0;
-  font:14px Arial,sans-serif;
-  overflow-wrap:anywhere;
+button.light { background:#e9e0d1; color:var(--ink); }
+button:disabled { opacity:.5; cursor:not-allowed; }
+.small {
+  font:13px Arial,sans-serif;
+  color:#666;
+  line-height:1.5;
 }
-.error { color:#a62632; }
-.success { color:#174c35; }
+.status {
+  font:14px Arial,sans-serif;
+  line-height:1.5;
+  margin:10px 0;
+}
+.status.error { color:#a62632; }
+.status.success { color:#174c35; }
 .gift {
   border:1px solid #e5dac7;
   border-radius:12px;
@@ -99,11 +104,18 @@ button:disabled { opacity:.5; cursor:wait; }
   font:12px Arial,sans-serif;
 }
 .hidden { display:none !important; }
-footer { text-align:center; padding:20px; color:#667; }
+footer {
+  text-align:center;
+  padding:20px;
+  color:#667;
+}
+hr { border:0; border-top:1px solid #ddd; margin:22px 0; }
+label { font:14px Arial,sans-serif; font-weight:bold; }
 </style>
 </head>
 
 <body>
+
 <header>
   <div style="font-size:30px">❄️ 🎄 ✨</div>
   <h1>My Christmas Wishlist</h1>
@@ -115,44 +127,60 @@ footer { text-align:center; padding:20px; color:#667; }
 <section class="panel">
   <h2>🎁 The Wishlist</h2>
   <p class="small">Browse the gifts on my Christmas list.</p>
-  <input id="search" placeholder="Search my wishlist...">
-  <div id="giftList">Connecting to wishlist...</div>
+
+  <input id="search"
+    placeholder="Search my wishlist..."
+    oninput="renderGifts()">
+
+  <div id="giftList">Loading gifts...</div>
   <div id="status" class="status" role="status"></div>
 </section>
 
 <section class="panel">
   <h2>🔐 Owner Login</h2>
+
   <p class="small" id="accountStatus">
     Sign in to manage your wishlist.
   </p>
 
   <div id="loginArea">
-    <label for="email">Email address</label>
-    <input id="email" type="email" autocomplete="username"
-      placeholder="Your account email">
+    <label for="email">Your email address</label>
+    <input
+      id="email"
+      type="email"
+      autocomplete="email"
+      placeholder="Enter your account email">
 
-    <label for="password">Password</label>
-    <input id="password" type="password"
-      autocomplete="current-password" placeholder="Your password">
+    <button id="loginButton" type="button" onclick="login()">
+      Send Login Link
+    </button>
 
-    <button id="loginButton" type="button">Sign in</button>
+    <p class="small">
+      We'll email you a secure sign-in link.
+      You do not need a password.
+    </p>
 
-    <p id="loginStatus" class="status" role="status" aria-live="polite"></p>
+    <p id="loginStatus" class="status" role="status"
+       aria-live="polite"></p>
   </div>
 
-  <button id="logoutButton" class="red hidden" type="button">
-    Sign out
+  <button id="logoutButton"
+    class="red hidden"
+    onclick="logout()">
+    Sign Out
   </button>
 </section>
 
 <section id="ownerArea" class="panel hidden">
   <h2>✏️ Manage My Wishlist</h2>
-  <p class="small">Manage your gifts while signed in.</p>
+  <p class="small">
+    Only your signed-in account can add, edit or remove gifts.
+  </p>
 
   <h3 id="formHeading">Add a gift</h3>
 
-  <label for="giftName">Gift name</label>
-  <input id="giftName" placeholder="Gift name *">
+  <label for="giftName">Gift name *</label>
+  <input id="giftName" placeholder="Gift name">
 
   <label for="giftPrice">Price</label>
   <input id="giftPrice" placeholder="Price (optional)">
@@ -172,7 +200,8 @@ footer { text-align:center; padding:20px; color:#667; }
   </select>
 
   <label for="giftNotes">Notes</label>
-  <textarea id="giftNotes" placeholder="Notes (optional)"></textarea>
+  <textarea id="giftNotes"
+    placeholder="Notes (optional)"></textarea>
 
   <label>
     <input id="giftTop" type="checkbox" style="width:auto">
@@ -180,76 +209,215 @@ footer { text-align:center; padding:20px; color:#667; }
   </label>
 
   <br>
-  <button id="saveButton" type="button">Save gift</button>
-  <button id="cancelButton" class="light" type="button">Cancel</button>
-  <p id="saveStatus" class="status" role="status"></p>
 
-  <hr style="border:0;border-top:1px solid #ddd;margin:22px 0">
+  <button onclick="saveGift()">Save Gift</button>
+  <button class="light" onclick="clearForm()">Cancel</button>
+
+  <hr>
 
   <h3>Import your old gifts</h3>
+
   <p class="small">
-    Attempts to read the old wishlist from this browser.
-    Your original saved list will not be deleted.
+    This checks the wishlist saved by your previous version
+    on this device. It does not erase your old list.
   </p>
-  <button id="importButton" class="gold" type="button">
+
+  <button class="gold"
+    id="importButton"
+    onclick="importOldGifts()">
     Import My Existing Gifts
   </button>
-  <p id="importStatus" class="status" role="status"></p>
+
+  <p id="importStatus" class="small"></p>
 </section>
 
 </main>
 
-<footer>Made with Christmas spirit ❤️</footer>
+<footer>
+  Made with Christmas spirit ❤️
+</footer>
 
 <script>
-"use strict";
+/* =====================================
+   SUPABASE CONFIGURATION
+===================================== */
 
-// YOUR SUPABASE CONNECTION
-const SUPABASE_URL = "https://dgyhqohyuotjzashttmb.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Pm-yTEcJGUHTa2bofqmAzw_MLtd8eEi";
+const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
+const SUPABASE_PUBLISHABLE_KEY =
+  "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+/* =====================================
+   INITIALIZATION
+===================================== */
 
 let db = null;
 let gifts = [];
-let editingId = null;
 let currentUser = null;
-let loginBusy = false;
+let editingId = null;
+let loading = false;
 
-const $ = id => document.getElementById(id);
+function $(id) {
+  return document.getElementById(id);
+}
 
-function showStatus(id, text, type = "") {
+function setStatus(id, text, type = "") {
   const element = $(id);
   element.textContent = text;
   element.className = "status " + type;
 }
 
-function setHidden(id, hidden) {
-  $(id).classList.toggle("hidden", hidden);
-}
-
-function initializeDatabase() {
-  if (!window.supabase || !window.supabase.createClient) {
-    showStatus(
+function initializeSupabase() {
+  if (!window.supabase) {
+    setStatus(
       "status",
-      "The Supabase library did not load. Check your internet connection and refresh."
+      "Supabase library did not load. Refresh the page.",
+      "error"
     );
-    $("giftList").textContent = "Wishlist connection unavailable.";
+    return false;
+  }
+
+  if (
+    SUPABASE_URL.includes("PASTE_") ||
+    SUPABASE_PUBLISHABLE_KEY.includes("PASTE_")
+  ) {
+    setStatus(
+      "status",
+      "Please add your Supabase Project URL and Publishable key.",
+      "error"
+    );
     return false;
   }
 
   try {
     db = window.supabase.createClient(
       SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      }
     );
+
     return true;
   } catch (error) {
-    showStatus("status", "Connection setup failed: " + error.message, "error");
+    setStatus("status", error.message, "error");
     return false;
   }
 }
 
+/* =====================================
+   EMAIL MAGIC LINK LOGIN
+===================================== */
+
+async function login() {
+  if (loading) return;
+
+  const email = $("email").value.trim();
+
+  if (!email) {
+    setStatus(
+      "loginStatus",
+      "Please enter your email address.",
+      "error"
+    );
+    return;
+  }
+
+  if (!db) {
+    setStatus(
+      "loginStatus",
+      "Supabase is not connected. Refresh the page.",
+      "error"
+    );
+    return;
+  }
+
+  loading = true;
+  $("loginButton").disabled = true;
+  $("loginButton").textContent = "Sending...";
+
+  setStatus("loginStatus", "Sending your login link...");
+
+  try {
+    const { error } = await db.auth.signInWithOtp({
+      email: email,
+      options: {
+        shouldCreateUser: false,
+        emailRedirectTo:
+          window.location.origin + window.location.pathname
+      }
+    });
+
+    if (error) throw error;
+
+    setStatus(
+      "loginStatus",
+      "Login link sent! Check your email, including your spam folder. Open the link on this same device or browser.",
+      "success"
+    );
+
+  } catch (error) {
+    setStatus(
+      "loginStatus",
+      "Could not send login link: " + error.message,
+      "error"
+    );
+  } finally {
+    loading = false;
+    $("loginButton").disabled = false;
+    $("loginButton").textContent = "Send Login Link";
+  }
+}
+
+/* =====================================
+   SIGN OUT
+===================================== */
+
+async function logout() {
+  if (!db) return;
+
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    setStatus("status", error.message, "error");
+    return;
+  }
+
+  currentUser = null;
+  clearForm();
+  updateOwnerView();
+  await loadGifts();
+}
+
+/* =====================================
+   OWNER VIEW
+===================================== */
+
+function updateOwnerView() {
+  const signedIn = !!currentUser;
+
+  $("ownerArea").classList.toggle("hidden", !signedIn);
+  $("loginArea").classList.toggle("hidden", signedIn);
+  $("logoutButton").classList.toggle("hidden", !signedIn);
+
+  $("accountStatus").textContent = signedIn
+    ? "You're signed in! You can manage your gifts."
+    : "Viewing mode. Sign in to manage your wishlist.";
+
+  renderGifts();
+}
+
+/* =====================================
+   LOAD GIFTS
+===================================== */
+
 async function loadGifts() {
-  $("giftList").textContent = "Loading gifts...";
+  if (!db) return;
+
+  setStatus("status", "Loading your wishlist...");
 
   try {
     const { data, error } = await db
@@ -262,20 +430,23 @@ async function loadGifts() {
     gifts = data || [];
     renderGifts();
 
-    if (!gifts.length) {
-      showStatus("status", "No gifts have been added yet.");
-    } else {
-      showStatus("status", "");
-    }
-  } catch (error) {
-    $("giftList").textContent = "Unable to load gifts.";
-    showStatus(
+    setStatus(
       "status",
-      "Database error: " + error.message,
+      gifts.length ? "" : "No gifts have been added yet."
+    );
+
+  } catch (error) {
+    setStatus(
+      "status",
+      "Couldn't load gifts: " + error.message,
       "error"
     );
   }
 }
+
+/* =====================================
+   DISPLAY GIFTS
+===================================== */
 
 function renderGifts() {
   const list = $("giftList");
@@ -288,19 +459,20 @@ function renderGifts() {
       .includes(search)
   );
 
-  list.replaceChildren();
-
   if (!visible.length) {
-    list.textContent = "No gifts found.";
+    list.innerHTML = "<p>No gifts found.</p>";
     return;
   }
+
+  list.innerHTML = "";
 
   visible.forEach(g => {
     const card = document.createElement("article");
     card.className = "gift";
 
     const title = document.createElement("h3");
-    title.textContent = (g.top_pick ? "⭐ " : "🎁 ") + g.name;
+    title.textContent =
+      (g.top_pick ? "⭐ " : "🎁 ") + g.name;
     card.appendChild(title);
 
     const category = document.createElement("span");
@@ -323,7 +495,11 @@ function renderGifts() {
     if (g.link) {
       try {
         const url = new URL(g.link);
-        if (url.protocol === "https:" || url.protocol === "http:") {
+
+        if (
+          url.protocol === "https:" ||
+          url.protocol === "http:"
+        ) {
           const link = document.createElement("a");
           link.href = url.href;
           link.target = "_blank";
@@ -356,116 +532,28 @@ function renderGifts() {
   });
 }
 
-async function login() {
-  if (loginBusy) return;
-
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  showStatus("loginStatus", "");
-
-  if (!email || !password) {
-    showStatus(
-      "loginStatus",
-      "Please enter both your email and password.",
-      "error"
-    );
-    return;
-  }
-
-  if (!db) {
-    showStatus(
-      "loginStatus",
-      "Supabase is not connected. Refresh the page.",
-      "error"
-    );
-    return;
-  }
-
-  loginBusy = true;
-  $("loginButton").disabled = true;
-  $("loginButton").textContent = "Signing in...";
-
-  try {
-    const { data, error } = await db.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-
-    if (error) {
-      console.error("Supabase login error:", error);
-      showStatus(
-        "loginStatus",
-        "Login failed: " + error.message +
-        (error.code ? " (" + error.code + ")" : ""),
-        "error"
-      );
-      return;
-    }
-
-    currentUser = data.user;
-
-    $("password").value = "";
-    showStatus("loginStatus", "Login successful!", "success");
-
-    updateOwnerView();
-    await loadGifts();
-
-  } catch (error) {
-    console.error("Login exception:", error);
-    showStatus(
-      "loginStatus",
-      "Unexpected login error: " + error.message,
-      "error"
-    );
-  } finally {
-    loginBusy = false;
-    $("loginButton").disabled = false;
-    $("loginButton").textContent = "Sign in";
-  }
-}
-
-async function logout() {
-  const { error } = await db.auth.signOut();
-
-  if (error) {
-    showStatus("loginStatus", error.message, "error");
-    return;
-  }
-
-  currentUser = null;
-  clearForm();
-  updateOwnerView();
-  await loadGifts();
-}
-
-function updateOwnerView() {
-  setHidden("ownerArea", !currentUser);
-  setHidden("loginArea", !!currentUser);
-  setHidden("logoutButton", !currentUser);
-
-  $("accountStatus").textContent = currentUser
-    ? "Signed in. You can manage your gifts."
-    : "Viewing mode. Sign in to manage your wishlist.";
-
-  renderGifts();
-}
+/* =====================================
+   CLEAR FORM
+===================================== */
 
 function clearForm() {
   editingId = null;
 
-  ["giftName", "giftPrice", "giftLink", "giftNotes"].forEach(id => {
-    $(id).value = "";
-  });
+  ["giftName", "giftPrice", "giftLink", "giftNotes"]
+    .forEach(id => $(id).value = "");
 
   $("giftCategory").value = "Other";
   $("giftTop").checked = false;
   $("formHeading").textContent = "Add a gift";
-  showStatus("saveStatus", "");
 }
+
+/* =====================================
+   EDIT GIFT
+===================================== */
 
 function editGift(g) {
   editingId = g.id;
+
   $("giftName").value = g.name || "";
   $("giftPrice").value = g.price || "";
   $("giftLink").value = g.link || "";
@@ -474,16 +562,26 @@ function editGift(g) {
   $("giftTop").checked = !!g.top_pick;
 
   $("formHeading").textContent = "Edit gift";
-  $("ownerArea").scrollIntoView({ behavior: "smooth" });
+
+  $("ownerArea").scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
+/* =====================================
+   SAVE GIFT
+===================================== */
+
 async function saveGift() {
-  if (!currentUser) return;
+  if (!currentUser) {
+    alert("Please sign in first.");
+    return;
+  }
 
   const name = $("giftName").value.trim();
 
   if (!name) {
-    showStatus("saveStatus", "Please enter a gift name.", "error");
+    alert("Please enter a gift name.");
     return;
   }
 
@@ -496,43 +594,49 @@ async function saveGift() {
     top_pick: $("giftTop").checked
   };
 
-  $("saveButton").disabled = true;
-
   try {
     let result;
 
     if (editingId) {
-      result = await db.from("gifts")
+      result = await db
+        .from("gifts")
         .update(item)
         .eq("id", editingId)
         .eq("owner_id", currentUser.id);
     } else {
-      result = await db.from("gifts")
-        .insert({
-          ...item,
-          owner_id: currentUser.id
-        });
+      item.owner_id = currentUser.id;
+
+      result = await db
+        .from("gifts")
+        .insert(item);
     }
 
     if (result.error) throw result.error;
 
     clearForm();
-    showStatus("saveStatus", "Gift saved!", "success");
     await loadGifts();
 
+    alert("Gift saved successfully!");
+
   } catch (error) {
-    showStatus("saveStatus", "Couldn't save: " + error.message, "error");
-  } finally {
-    $("saveButton").disabled = false;
+    alert("Couldn't save gift: " + error.message);
   }
 }
 
+/* =====================================
+   DELETE GIFT
+===================================== */
+
 async function deleteGift(id) {
   if (!currentUser) return;
-  if (!confirm("Delete this gift from your wishlist?")) return;
+
+  if (!confirm("Delete this gift from your wishlist?")) {
+    return;
+  }
 
   try {
-    const { error } = await db.from("gifts")
+    const { error } = await db
+      .from("gifts")
       .delete()
       .eq("id", id)
       .eq("owner_id", currentUser.id);
@@ -540,13 +644,20 @@ async function deleteGift(id) {
     if (error) throw error;
 
     await loadGifts();
+
   } catch (error) {
     alert("Couldn't delete: " + error.message);
   }
 }
 
+/* =====================================
+   IMPORT OLD GIFTS
+===================================== */
+
 function findOldGifts() {
-  const raw = localStorage.getItem("christmasWishlist2026");
+  const raw = localStorage.getItem(
+    "christmasWishlist2026"
+  );
 
   if (!raw) return [];
 
@@ -554,12 +665,14 @@ function findOldGifts() {
     const parsed = JSON.parse(raw);
 
     if (Array.isArray(parsed)) return parsed;
-    if (parsed && Array.isArray(parsed.gifts)) return parsed.gifts;
-    if (parsed && Array.isArray(parsed.items)) return parsed.items;
+    if (parsed && Array.isArray(parsed.gifts)) {
+      return parsed.gifts;
+    }
+    if (parsed && Array.isArray(parsed.items)) {
+      return parsed.items;
+    }
 
-  } catch (error) {
-    console.error("Old wishlist parsing error:", error);
-  }
+  } catch (_) {}
 
   return [];
 }
@@ -570,15 +683,17 @@ async function importOldGifts() {
   const old = findOldGifts();
 
   if (!old.length) {
-    showStatus(
-      "importStatus",
-      "No old gifts found under the expected browser storage key. Your original list has not been changed.",
-      "error"
-    );
+    $("importStatus").textContent =
+      "No old gifts were found under the expected saved-list key on this device. Your old list has not been changed.";
     return;
   }
 
-  if (!confirm("Import " + old.length + " gifts into your online wishlist?")) {
+  if (
+    gifts.length &&
+    !confirm(
+      "Your online list already has gifts. Import the old list anyway?"
+    )
+  ) {
     return;
   }
 
@@ -588,71 +703,81 @@ async function importOldGifts() {
     link: String(g.link || g.url || ""),
     category: String(g.category || "Other"),
     notes: String(g.notes || ""),
-    top_pick: Boolean(g.top_pick || g.topPick || g.priority),
+    top_pick: Boolean(
+      g.top_pick || g.topPick || g.priority
+    ),
     owner_id: currentUser.id
   }));
 
-  $("importButton").disabled = true;
-
   try {
-    const { error } = await db.from("gifts").insert(rows);
+    const { error } = await db
+      .from("gifts")
+      .insert(rows);
 
     if (error) throw error;
 
-    showStatus(
-      "importStatus",
-      "Successfully imported " + rows.length + " gifts!",
-      "success"
-    );
+    $("importStatus").textContent =
+      "Imported " + rows.length +
+      " gifts. Please check your wishlist.";
+
+    $("importButton").disabled = true;
 
     await loadGifts();
 
   } catch (error) {
-    showStatus(
-      "importStatus",
-      "Import failed: " + error.message,
-      "error"
-    );
-  } finally {
-    $("importButton").disabled = false;
+    $("importStatus").textContent =
+      "Import failed: " + error.message;
   }
 }
 
+/* =====================================
+   START WEBSITE
+===================================== */
+
 async function start() {
-  $("loginButton").addEventListener("click", login);
-  $("logoutButton").addEventListener("click", logout);
-  $("saveButton").addEventListener("click", saveGift);
-  $("cancelButton").addEventListener("click", clearForm);
-  $("importButton").addEventListener("click", importOldGifts);
-  $("search").addEventListener("input", renderGifts);
+  if (!initializeSupabase()) return;
 
-  $("password").addEventListener("keydown", event => {
-    if (event.key === "Enter") login();
+  db.auth.onAuthStateChange((event, session) => {
+    currentUser = session ? session.user : null;
+    updateOwnerView();
+
+    if (event !== "INITIAL_SESSION") {
+      loadGifts();
+    }
   });
-
-  if (!initializeDatabase()) return;
 
   try {
     const { data, error } = await db.auth.getSession();
 
     if (error) throw error;
 
-    currentUser = data.session ? data.session.user : null;
+    currentUser = data.session
+      ? data.session.user
+      : null;
+
     updateOwnerView();
     await loadGifts();
 
-    db.auth.onAuthStateChange((_event, session) => {
-      currentUser = session ? session.user : null;
-      updateOwnerView();
-      loadGifts();
-    });
+    // Clean up authentication information from the URL
+    if (window.location.hash.includes("access_token")) {
+      history.replaceState(
+        null,
+        document.title,
+        window.location.pathname + window.location.search
+      );
+    }
 
   } catch (error) {
-    showStatus("status", "Startup error: " + error.message, "error");
+    setStatus(
+      "status",
+      "Could not initialize your session: " + error.message,
+      "error"
+    );
   }
 }
 
 start();
 </script>
+
 </body>
 </html>
