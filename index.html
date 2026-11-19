@@ -515,7 +515,7 @@ body.theme-northpole {
 
   <label for="giftImage">Gift image URL</label>
   <input id="giftImage" type="url" placeholder="Paste a direct image URL (optional)">
-  <p class="small">Images will appear in the gift card and gallery.</p>
+  <p class="small">This picture will appear in the Gift Gallery only. It will not appear on the regular wishlist gift card.</p>
 
   <label for="giftCategory">Category</label>
   <select id="giftCategory">
@@ -553,7 +553,7 @@ body.theme-northpole {
 <footer>
   Made with Christmas spirit ❤️
 </footer>
-<div class="version">VERSION 3.1</div>
+<div class="version">VERSION 3.2</div>
 
 <script>
 /* SUPABASE CONFIGURATION */
@@ -734,6 +734,7 @@ function toggleFireplace() {
 
 /* IMAGE DATA
    Image URLs are stored in the existing notes column.
+   They are displayed in the gallery only.
    No database changes are needed.
 */
 
@@ -876,7 +877,9 @@ async function loadGifts() {
   }
 }
 
-/* RENDER WISHLIST */
+/* RENDER WISHLIST
+   IMPORTANT: Gift images are intentionally NOT added to these cards.
+*/
 
 function renderGifts() {
   const list = $("giftList");
@@ -897,7 +900,6 @@ function renderGifts() {
     return;
   }
 
-  // Show top picks first.
   visible.sort((a,b) => Number(b.top_pick) - Number(a.top_pick));
 
   visible.forEach(g => {
@@ -913,15 +915,7 @@ function renderGifts() {
       card.appendChild(label);
     }
 
-    if (details.image) {
-      const image = document.createElement("img");
-      image.className = "gift-image";
-      image.src = details.image;
-      image.alt = g.name || "Wishlist gift";
-      image.loading = "lazy";
-      image.onerror = () => image.remove();
-      card.appendChild(image);
-    }
+    /* No image is displayed in the wishlist card. */
 
     const title = document.createElement("h3");
     title.textContent = (g.top_pick ? "⭐ " : "🎁 ") + g.name;
@@ -980,7 +974,9 @@ function renderGifts() {
   });
 }
 
-/* GIFT GALLERY */
+/* GIFT GALLERY
+   This is the ONLY place gift image URLs are displayed.
+*/
 
 function renderGallery() {
   const gallery = $("giftGallery");
